@@ -1,5 +1,6 @@
 package com.thinkive;
 
+import com.thinkive.common.authority.util.Appctx;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LotteryApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LotteryApplication.class, args);
+		Appctx.ctx = SpringApplication.run(LotteryApplication.class, args);
+
 	}
 }

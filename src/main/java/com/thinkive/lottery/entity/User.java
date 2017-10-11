@@ -1,11 +1,9 @@
 package com.thinkive.lottery.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by thinkive on 2017/10/8.
@@ -28,15 +26,19 @@ public class User implements Serializable{
 
     private String enabled;
 
-    public User(String userName, String password, String nickName, Date registrationTime, String enabled) {
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<Role> roles;
+
+    public User() {
+    }
+
+    public User(String userName, String password, String nickName, Date registrationTime, String enabled, Set<Role> roles) {
         this.userName = userName;
         this.password = password;
         this.nickName = nickName;
         this.registrationTime = registrationTime;
         this.enabled = enabled;
-    }
-
-    public User() {
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -85,5 +87,13 @@ public class User implements Serializable{
 
     public void setEnabled(String enabled) {
         this.enabled = enabled;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
