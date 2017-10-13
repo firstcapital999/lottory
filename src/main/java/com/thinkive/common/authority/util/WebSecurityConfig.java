@@ -28,8 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/home").permitAll()//访问：/home 无需登录认证权限
-                .antMatchers("/images/**","/css/**","/js/**","/**/*.html").permitAll()
+                .antMatchers("/","/home","/register","/regist/**","/testShort","/yourls/*","/images/**","/css/**","/js/**","/**/*.html").permitAll()//访问：/home 无需登录认证权限
                 .anyRequest().authenticated() //其他所有资源都需要认证，登陆后访问
                 .antMatchers("/hello").hasAuthority("ADMIN") //登陆后之后拥有“ADMIN”权限才可以访问/hello方法，否则系统会出现“403”权限不足的提示
                 .and()
@@ -51,8 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 //指定密码加密所使用的加密器为passwordEncoder()
 //需要将密码加密后写入数据库
-        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
-        auth.eraseCredentials(false);
+        /*auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.eraseCredentials(false);*/
+        auth
+                .inMemoryAuthentication()
+                .withUser("user").password("password").roles("USER");
     }
 
     @Bean
@@ -63,5 +65,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginSuccessHandler loginSuccessHandler(){
         return new LoginSuccessHandler();
+    }
+
+
+    public static void main(String[] args){
+        WebSecurityConfig webSecurityConfig = new WebSecurityConfig();
+    String pwd = webSecurityConfig.passwordEncoder().encode("123456");
+    System.out.print(pwd);
     }
 }

@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 80
   tomcat:
     accesslog:
       enabled: true
