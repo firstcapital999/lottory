@@ -1,3 +1,4 @@
+/*
 package com.thinkive.common.intercept;
 
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -7,13 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
-/*@Component*/
+*/
+/*@Component*//*
+
 public class TimeInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
         System.out.println("preHandler");
-       /* System.out.println(((HandlerMethod)handler).getBean().getClass().getName());
-        System.out.println(((HandlerMethod)handler).getMethod().getName());*/
+       */
+/* System.out.println(((HandlerMethod)handler).getBean().getClass().getName());
+        System.out.println(((HandlerMethod)handler).getMethod().getName());*//*
+
         httpServletRequest.setAttribute("startTime",new Date().getTime());
         return true;
     }
@@ -30,6 +35,9 @@ public class TimeInterceptor implements HandlerInterceptor {
         System.out.println("afterHandler");
         Long start = (Long) httpServletRequest.getAttribute("startTime");
         System.out.println("time interceptor 耗时："+(new Date().getTime()-start));
-/*        System.out.println(e.getMessage());*/
+*/
+/*        System.out.println(e.getMessage());*//*
+
     }
 }
+*/

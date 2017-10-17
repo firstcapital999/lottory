@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("UserName " + userName + " not found");
         }
         // SecurityUser实现UserDetails并将SysUser的name映射为username
-        user.setPassword(passwordEncoder.encode("123456"));
+/*        user.setPassword(passwordEncoder.encode("123456"));*/
         SecurityUser securityUser = new SecurityUser(user);
         return  securityUser;
     }

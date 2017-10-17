@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(lotteryAuthenticationSuccessHandler) //登录成功后可使用loginSuccessHandler()存储用户信息，可选。
                 .and()
                 .logout()
-                .logoutSuccessUrl("/home") //退出登录后的默认网址是”/home”
+               /* .logoutSuccessUrl("/home") //退出登录后的默认网址是”/home”*/
                 .permitAll()
                 .invalidateHttpSession(true)
                 .and()

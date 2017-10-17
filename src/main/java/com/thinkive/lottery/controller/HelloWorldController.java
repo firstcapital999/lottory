@@ -53,7 +53,7 @@ public class HelloWorldController {
 
     }
 
-/*    @GetMapping(value = "/home")
+   @GetMapping(value = "/home")
     public String getHome(){
 
         return "/activity/views/detail";
@@ -62,7 +62,7 @@ public class HelloWorldController {
     @GetMapping(value = "/login")
     public String login(){
         return "/activity/views/login";
-    }*/
+    }
 
     @GetMapping(value = "/register")
     public String register(){

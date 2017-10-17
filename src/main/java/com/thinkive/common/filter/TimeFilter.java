@@ -1,3 +1,4 @@
+/*
 package com.thinkive.common.filter;
 
 
@@ -31,3 +32,4 @@ public class TimeFilter implements Filter {
         System.out.println("time filter destory");
     }
 }
+*/

@@ -22,6 +22,6 @@ public class LotteryAuthenticationSuccessHandler implements AuthenticationSucces
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
             System.out.println("登录成功！");
             httpServletResponse.setContentType("application/json;charset=UTF-8");
-            httpServletResponse.getWriter().write(objectMapper.writeValueAsString(authentication));
+            /*httpServletResponse.getWriter().write(objectMapper.writeValueAsString(authentication));*/
     }
 }

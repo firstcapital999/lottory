@@ -17,13 +17,15 @@
 		<div class="login_bg">
 			<img src="../images/login_bg.png" />
 		</div>
+		<form action="/login">
 		<div class="num">
-			<img src="../images/shouji.png"/><input class="numphone" type="number" placeholder="请输入手机号" />
+			<img src="../images/shouji.png"/><input class="numphone" type="number" name="username" placeholder="请输入手机号" />
 		</div>
 		<div class="password">
-			<img src="../images/login_password.png"/><input class="numpassword" type="password" placeholder="请输入密码" />
+			<img src="../images/login_password.png"/><input class="numpassword" type="password" name="password" placeholder="请输入密码" />
 		</div>
-		<span class="login">登录</span>
+            <button type="submit" class="btn btn-primary login">登录</button>
 		<span class="resiter_btn">注册></span>
+		</form>
 	</body>
 </html>

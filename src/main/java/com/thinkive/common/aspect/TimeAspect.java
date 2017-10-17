@@ -1,3 +1,4 @@
+/*
 package com.thinkive.common.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -28,3 +29,4 @@ public class TimeAspect {
     }
 
 }
+*/
