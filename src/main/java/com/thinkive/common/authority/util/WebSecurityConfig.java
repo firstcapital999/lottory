@@ -1,10 +1,10 @@
 package com.thinkive.common.authority.util;
 
+import com.thinkive.common.authority.handler.LotteryAuthenticationSuccessHandler;
 import com.thinkive.common.authority.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,6 +20,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private LotteryAuthenticationSuccessHandler lotteryAuthenticationSuccessHandler;
     //http://localhost:8080/login 输入正确的用户名密码 并且选中remember-me 则登陆成功，转到 index页面
     //再次访问index页面无需登录直接访问
     //访问http://localhost:8080/home 不拦截，直接访问，
@@ -35,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")//指定登录页是”/login”
                 .permitAll()
-                .successHandler(loginSuccessHandler()) //登录成功后可使用loginSuccessHandler()存储用户信息，可选。
+                .successHandler(lotteryAuthenticationSuccessHandler) //登录成功后可使用loginSuccessHandler()存储用户信息，可选。
                 .and()
                 .logout()
                 .logoutSuccessUrl("/home") //退出登录后的默认网址是”/home”
@@ -43,29 +46,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .and()
                 .rememberMe()//登录后记住用户，下次自动登录,数据库中必须存在名为persistent_logins的表
-                .tokenValiditySeconds(1209600);
+                .tokenValiditySeconds(1209600)
+                .and().csrf().disable();//跨站防护关闭
     }
 
-    @Autowired
+   /* @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 //指定密码加密所使用的加密器为passwordEncoder()
 //需要将密码加密后写入数据库
-        /*auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
-        auth.eraseCredentials(false);*/
+        *//*auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.eraseCredentials(false);*//*
         auth
                 .inMemoryAuthentication()
                 .withUser("user").password("password").roles("USER");
     }
-
-    @Bean
+*/
+    @Bean(name = "passwordEncoder")
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(4);
+        return new BCryptPasswordEncoder();
     }
 
-    @Bean
+  /*  @Bean
     public LoginSuccessHandler loginSuccessHandler(){
         return new LoginSuccessHandler();
-    }
+    }*/
 
 
     public static void main(String[] args){

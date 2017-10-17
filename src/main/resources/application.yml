@@ -19,7 +19,7 @@ spring:
     cache: false
   session:
     store-type: none
-security:
-  basic:
-    enabled: false
+#security:
+  #basic:
+    #enabled: false
 

@@ -5,11 +5,13 @@ import com.thinkive.common.util.ResultUtil;
 import com.thinkive.lottery.dao.UserRepository;
 import com.thinkive.lottery.entity.Role;
 import com.thinkive.lottery.entity.User;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -22,6 +24,7 @@ import java.util.Set;
  * Created by thinkive on 2017/10/8.
  */
 @Controller
+@EnableSwagger2
 public class HelloWorldController {
 
     @Autowired
@@ -32,6 +35,7 @@ public class HelloWorldController {
 
     @GetMapping(value = "/findAll")
     @ResponseBody
+    @ApiOperation(value = "查询所有的方法")
     public List<User> userList(){
         return this.userRepository.findAll();
     }
