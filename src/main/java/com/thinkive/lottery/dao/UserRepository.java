@@ -1,6 +1,6 @@
 package com.thinkive.lottery.dao;
 
-import com.thinkive.lottery.entity.User;
+import com.thinkive.common.authority.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

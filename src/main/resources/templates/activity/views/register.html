@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 	<head>
 		<meta charset="utf-8"/>
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;"/>
@@ -16,8 +17,9 @@
 		<div class="login_bg">
 			<img src="../images/login_bg.png" />
 		</div>
+		<form th:action="@{/regist}" method="post">
 		<div class="num">
-			<img src="../images/shouji.png"/><input class="numphone" type="number" placeholder="请输入手机号" />
+			<img src="../images/shouji.png"/><input class="numphone" type="number" name="userName" placeholder="请输入手机号" />
 		</div>
 		
 		<!--<div class="num yzm">
@@ -25,12 +27,12 @@
 			
 		</div>-->
 		<div class="password">
-			<img src="../images/login_password.png"/><input class="numpassword" type="password" placeholder="请输入密码" />
+			<img src="../images/login_password.png"/><input class="numpassword" type="password" name="password" placeholder="请输入密码" />
 		</div>
 		<div class="password">
-			<img src="../images/login_password.png"/><input class="numpassword" type="password" placeholder="请再次输入密码" />
+			<img src="../images/login_password.png"/><input class="numpassword" type="password" name="password2"  placeholder="请再次输入密码" />
 		</div>
-		<span class="register">注册</span>
-		
+		<span class="register"><button type="submit">注册</button></span>
+		</form>
 	</body>
 </html>

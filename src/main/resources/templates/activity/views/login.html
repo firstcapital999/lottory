@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
-	<head>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
 		<meta charset="utf-8"/>
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;"/>
 	    <meta name="format-detection" content="telephone=no"/>
@@ -17,12 +18,12 @@
 		<div class="login_bg">
 			<img src="../images/login_bg.png" />
 		</div>
-		<form action="/login">
+		<form th:action="@{/login}" method="post">
 		<div class="num">
-			<img src="../images/shouji.png"/><input class="numphone" type="number" name="username" placeholder="请输入手机号" />
+			<img src="../images/shouji.png"/><input class="numphone" type="text" name="username" id="username" placeholder="请输入手机号" />
 		</div>
 		<div class="password">
-			<img src="../images/login_password.png"/><input class="numpassword" type="password" name="password" placeholder="请输入密码" />
+			<img src="../images/login_password.png"/><input class="numpassword" type="password" name="password" id="password" placeholder="请输入密码" />
 		</div>
             <button type="submit" class="btn btn-primary login">登录</button>
 		<span class="resiter_btn">注册></span>

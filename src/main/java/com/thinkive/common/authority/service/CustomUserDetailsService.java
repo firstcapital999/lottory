@@ -1,8 +1,8 @@
 package com.thinkive.common.authority.service;
 
-import com.thinkive.common.authority.util.SecurityUser;
+import com.thinkive.common.authority.entity.SecurityUser;
 import com.thinkive.lottery.dao.UserRepository;
-import com.thinkive.lottery.entity.User;
+import com.thinkive.common.authority.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

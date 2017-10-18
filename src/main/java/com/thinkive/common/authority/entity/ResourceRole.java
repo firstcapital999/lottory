@@ -1,4 +1,4 @@
-package com.thinkive.lottery.entity;
+package com.thinkive.common.authority.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

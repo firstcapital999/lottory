@@ -19,6 +19,15 @@ spring:
     cache: false
   session:
     store-type: none
+  redis:
+    database: 0
+    host: 120.77.200.240
+    port: 6379
+    pool:
+      max-active: 8
+      min-idle: 0
+      max-wait: -1
+
 #security:
   #basic:
     #enabled: false

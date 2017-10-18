@@ -1,7 +1,5 @@
-package com.thinkive.common.authority.util;
+package com.thinkive.common.authority.entity;
 
-import com.thinkive.lottery.entity.Role;
-import com.thinkive.lottery.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

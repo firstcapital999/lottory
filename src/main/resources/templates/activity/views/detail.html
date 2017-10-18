@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 	<head>
 		<meta charset="utf-8"></meta>
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;"></meta>
@@ -18,6 +19,7 @@
 			<div class="actTime">
 				<p>在9月10日到10月10日</p>
 				<p>首次注册的用户均可以参与幸运大抽奖</p>
+				<p><h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1></p>
 			</div>
 			<div class="getAward_wrap3">
 				<div class="getAward_wrap2">

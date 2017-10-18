@@ -1,4 +1,4 @@
-package com.thinkive.common.authority.util;
+package com.thinkive.common.authority.configuration;
 
 import com.thinkive.common.authority.handler.LotteryAuthenticationSuccessHandler;
 import com.thinkive.common.authority.service.CustomUserDetailsService;
