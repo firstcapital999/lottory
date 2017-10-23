@@ -64,7 +64,8 @@ public class LotteryApplicationTests {
 
     @Test
     public void testRedis2() throws  Exception{
-
+        stringRedisTemplate.opsForValue().set("aaa", "111");
+        Assert.assertEquals("111", stringRedisTemplate.opsForValue().get("aaa"));
     }
 
 }
