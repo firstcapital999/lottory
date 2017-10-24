@@ -1,4 +1,4 @@
-package com.thinkive.common.util;
+package com.thinkive.common.redis.util;
 
 import com.thinkive.common.entity.Result;
 
