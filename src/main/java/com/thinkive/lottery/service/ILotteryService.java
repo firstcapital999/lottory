@@ -6,5 +6,5 @@ import java.util.Map;
 
 public interface ILotteryService {
 
-    public Map<String,Object> lottery(RedisTemplate redisTemplate, String activityId);
+    public Map<String,Object> lottery(RedisTemplate redisTemplate, String activityId) throws Exception;
 }

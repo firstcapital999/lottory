@@ -1,83 +1,73 @@
-/*
 package com.thinkive.lottery.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.thinkive.lottery.constant.RedisConstant;
 import com.thinkive.lottery.service.ILotteryService;
+import com.thinkive.lottery.util.AliasMethod;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LotteryServiceImpl implements ILotteryService {
+
+    private Logger logger = LoggerFactory.getLogger(LotteryServiceImpl.class);
 
     @Autowired
     private RedisTemplate redisTemplate;
 
     @Override
-    public Map<String, Object> lottery(RedisTemplate redisTemplate, String activityId) {
-        */
-/* 奖品概率集 *//*
-
+    public Map<String, Object> lottery(RedisTemplate redisTemplate, String activityId) throws Exception {
+        /* 奖品概率集 */
         List<Double> prob = new ArrayList<Double>();
 
-        */
-/* 奖品结果集 *//*
-
+        /* 奖品结果集 */
         List<Map<String,Object>> selectAwardList = new ArrayList<Map<String,Object>>();
 
-        */
-/* 根据活动信息,获取到缓存中所有奖品信息 *//*
-
+        /* 根据活动信息,获取到缓存中所有奖品信息 */
         try
         {
-            */
-/* 中奖率累计 *//*
-
+            /* 中奖率累计 */
             double probabilityTotal = 0.0;
-            */
-/* 获取活动对应奖品集 *//*
-
+            /* 获取活动对应奖品集 */
             try
             {
                 // 获取所有活动奖品键
                 String awardListKey = RedisConstant.prizeCacheKey + "_" + activityId;
-                redisTemplate.getHashKeySerializer();
-                List<DataRow> awardList = redisClient.hgetListObj(awardListKey, Map.class);
+                Map<String,Object> awardList =  redisTemplate.opsForHash().entries(awardListKey);
+/*
+
+                List<DataRow> awardList = redisClient.hgetListObj(awardListKey, Map.class);*/
                 if ( awardList.size() == 0 )
                 {
                     logger.info("没有获取到活动对应奖品信息. 活动唯一键[" + activityId + "].");
                     return null;
                 }
 
-                for (DataRow awrad : awardList)
-                {
-                    String awardId = awrad.getString("id");
+                for(Map.Entry<String, Object> entry : awardList.entrySet()){
+                    String obj = (String) entry.getValue();
+                    Map<String,Object> awrad = JSON.parseObject(obj);
+                    String awardId = (String) awrad.get("id");
 
-                    */
-/* 过滤奖品数量,存量如果<=0 不再参与到抽奖环节 *//*
+                    String awardPoolKey = RedisConstant.prizePoolCacheKey + "_" + activityId;
 
-                    String awardPoolKey = RedisQueueConstants.prizePoolCacheKey + "_" + activityId;
+                    String amount = (String) redisTemplate.opsForHash().get(awardPoolKey,awardId);
 
-                    //验证数量
-                    String amount = redisClient.getStringFromHget(awardPoolKey, awardId);
                     if ( amount == null || Integer.parseInt(amount) <= 0 )
                     {
                         continue;
                     }
-
-                    */
-/* 过滤活动周期限制,周期内抽奖次数达到上限的奖品类别,不参与抽奖 *//*
-
-                    String cycle = awrad.getString("win_unit"); // 中奖频率
+                      /* 过滤活动周期限制,周期内抽奖次数达到上限的奖品类别,不参与抽奖 */
+                    String cycle = (String) awrad.get("win_unit"); // 中奖频率
                     // 0
                     // 月、1
                     // 天数
                     // 、2
                     // 周
-                    String limitWinNum = awrad.getString("win_total"); // 限定中奖名额
+                    String limitWinNum = (String) awrad.get("win_total"); // 限定中奖名额
                     if ( cycle != null && !"".equals(cycle) )
                     { // 存在频率限制类型
                         if ( limitWinNum != null && !"".equals(limitWinNum) )
@@ -91,13 +81,12 @@ public class LotteryServiceImpl implements ILotteryService {
                                 {
                                     case 1:
 
-                                        */
-/* 抽奖频率 次/天 *//*
-
+                                        /* 抽奖频率 次/天 */
                                         String date = DateFormatUtils.format(calendar, "yyyyMMdd");
-                                        String day = RedisQueueConstants.activityDayTotelOfParticipationCacheKey + "_"
-                                                + activityId + "_" + awrad.getString("id") + "_" + date;
-                                        String dn = redisClient.getString(day);
+                                        String day = RedisConstant.activityDayTotelOfParticipationCacheKey + "_"
+                                                + activityId + "_" + awrad.get("id") + "_" + date;
+
+                                        String dn = (String) redisTemplate.opsForValue().get(day);
                                         if ( dn != null && dn.matches("\\d+") )
                                         {
                                             if ( Integer.parseInt(dn) >= limit )
@@ -108,13 +97,11 @@ public class LotteryServiceImpl implements ILotteryService {
                                         break;
                                     case 2:
 
-                                        */
-/* 抽奖频率 次/周 *//*
-
+                                        /* 抽奖频率 次/周 */
                                         int week = calendar.get(Calendar.WEEK_OF_YEAR);
-                                        String cacheKeyW = RedisQueueConstants.activityWeekTotelOfParticipationCacheKey
-                                                + "_" + activityId + "_" + awrad.getString("id") + "_" + week;
-                                        String wn = redisClient.getString(cacheKeyW);
+                                        String cacheKeyW = RedisConstant.activityWeekTotelOfParticipationCacheKey
+                                                + "_" + activityId + "_" + awrad.get("id") + "_" + week;
+                                        String wn = (String) redisTemplate.opsForValue().get(cacheKeyW);
                                         if ( wn != null && wn.matches("\\d+") )
                                         {
                                             if ( Integer.parseInt(wn) >= limit )
@@ -125,13 +112,11 @@ public class LotteryServiceImpl implements ILotteryService {
                                         break;
                                     case 0:
 
-                                        */
-/* 抽奖频率 次/月 *//*
-
+                                        /* 抽奖频率 次/月 */
                                         int month = calendar.get(Calendar.MONTH) + 1;
-                                        String cacheKeyM = RedisQueueConstants.activityMonthTotelOfParticipationCacheKey
-                                                + "_" + activityId + "_" + awrad.getString("id") + "_" + month;
-                                        String mn = redisClient.getString(cacheKeyM);
+                                        String cacheKeyM = RedisConstant.activityMonthTotelOfParticipationCacheKey
+                                                + "_" + activityId + "_" + awrad.get("id") + "_" + month;
+                                        String mn = (String) redisTemplate.opsForValue().get(cacheKeyM);
                                         if ( mn != null && mn.matches("\\d+") )
                                         {
                                             if ( Integer.parseInt(mn) >= limit )
@@ -151,18 +136,14 @@ public class LotteryServiceImpl implements ILotteryService {
                             }
                         }
                     }
-
                     // 取出当前概率
-                    double probability = awrad.getDouble("probability");
+                    double probability = (double) awrad.get("probability");
 
-                    */
-/* 获取该奖品的中奖率,累加中奖率 *//*
-
+                    /* 获取该奖品的中奖率,累加中奖率 */
                     probabilityTotal += probability;
 
                     // 选中奖品列表
                     selectAwardList.add(awrad);
-
                 }
             }
             catch (Exception e)
@@ -174,19 +155,19 @@ public class LotteryServiceImpl implements ILotteryService {
             // 改成那个什么礼包
             if ( probabilityTotal < 100 )
             {
-                DataRow pullPrize = new DataRow();
-                pullPrize.set("id", "20"); //补充活动ID
-                pullPrize.set("money", 0); // 设置为0元
-                pullPrize.set("amount", 0); // 设置数量0
-                pullPrize.set("name", "开心奖");
-                pullPrize.set("introduce", "3688钻石会员资讯包");
-                pullPrize.set("probability", (100 - probabilityTotal));
-                pullPrize.set("pic_url", "../wx/images/redIcon/VIP.png");
-                pullPrize.set("is_hb", 0); // 无价值奖品
-                pullPrize.set("is_default", 1);
-                pullPrize.set("orderline", "0"); //默认奖品
-                pullPrize.set("rank", 0); //排名
-                pullPrize.set("type", "0");//奖品类型(1为大将，0为小奖
+                Map<String,Object> pullPrize = new HashMap<String,Object>();
+                pullPrize.put("id", "20"); //补充活动ID
+                pullPrize.put("money", 0); // 设置为0元
+                pullPrize.put("amount", 0); // 设置数量0
+                pullPrize.put("name", "开心奖");
+                pullPrize.put("introduce", "3688钻石会员资讯包");
+                pullPrize.put("probability", (100 - probabilityTotal));
+                pullPrize.put("pic_url", "../wx/images/redIcon/VIP.png");
+                pullPrize.put("is_hb", 0); // 无价值奖品
+                pullPrize.put("is_default", 1);
+                pullPrize.put("orderline", "0"); //默认奖品
+                pullPrize.put("rank", 0); //排名
+                pullPrize.put("type", "0");//奖品类型(1为大将，0为小奖
                 selectAwardList.add(pullPrize);
             }
 
@@ -198,12 +179,10 @@ public class LotteryServiceImpl implements ILotteryService {
 
             try
             {
-                */
-/* 遍历所有奖品,取得奖品概率生成随机算法计算规则 *//*
-
-                for (DataRow ps : selectAwardList)
+                /* 遍历所有奖品,取得奖品概率生成随机算法计算规则 */
+                for (Map<String,Object> ps : selectAwardList)
                 {
-                    double rate = ps.getDouble("probability");
+                    double rate = (double) ps.get("probability");
                     double tmp = rate / 100;
                     prob.add(tmp);
                 }
@@ -214,18 +193,14 @@ public class LotteryServiceImpl implements ILotteryService {
                 throw new IllegalAccessException("初始化抽奖算法规则异常! 活动唯一ID:" + activityId);
             }
 
-            */
-/* 实例化抽奖算法,并抽奖 *//*
-
+            /* 实例化抽奖算法,并抽奖 */
             AliasMethod aliasMethod = new AliasMethod(prob);
 
-            */
-/* 开始抽奖 *//*
-
+            /* 开始抽奖 */
             int index = aliasMethod.next();
 
             // 返回抽中奖品
-            DataRow selectAward = selectAwardList.get(index);
+            Map<String,Object> selectAward = selectAwardList.get(index);
 
             //            logger.error("抽奖列表1："+JSON.toJSONString(selectAwardList));
             //            logger.error("抽奖列表2："+JSON.toJSONString(prob));
@@ -235,8 +210,7 @@ public class LotteryServiceImpl implements ILotteryService {
         catch (Exception e)
         {
             logger.error("活动抽奖业务服务接口出现异常!", e);
-            throw new InvokeException("活动抽奖业务服务接口出现异常! 异常信息 :[" + e.getMessage() + "]", 3);
+            throw new Exception("活动抽奖业务服务接口出现异常! 异常信息 :[" + e.getMessage() + "]");
         }
     }
 }
-*/
