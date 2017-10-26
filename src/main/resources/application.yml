@@ -13,10 +13,11 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
   thymeleaf:
     cache: false
+    mode: LEGACYHTML5
   session:
     store-type: none
   redis:

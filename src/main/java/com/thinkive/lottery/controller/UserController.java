@@ -2,7 +2,7 @@ package com.thinkive.lottery.controller;
 
 import com.thinkive.common.authority.entity.Role;
 import com.thinkive.common.authority.entity.User;
-import com.thinkive.lottery.dao.UserRepository;
+import com.thinkive.lottery.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,9 +33,13 @@ public class UserController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+   /* //用户操作服务
+    @Autowired
+    private UserRepository userRepository;*/
+
     //用户操作服务
     @Autowired
-    private UserRepository userRepository;
+    private IUserService userService;
 
     //session获取服务
     private RequestCache requestCache = new HttpSessionRequestCache();
@@ -79,7 +83,7 @@ public class UserController {
             role.setRoleName("管理员");
             roles.add(role);
             user.setRoles(roles);
-            this.userRepository.save(user);
+            this.userService.save(user);
             return "/activity/views/login";
         }
     }

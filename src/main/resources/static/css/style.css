@@ -24,6 +24,7 @@ ul,ol {
 }
 
 img {
+	width: 100%;
     border: none;
     vertical-align: middle;
 }
@@ -76,6 +77,7 @@ img {
 	border-radius: 0.3rem;
 }
 .getAward{
+	position: relative;
 	width: 100%;
 	height: 16rem;	
 }
@@ -455,4 +457,43 @@ img {
 	position: absolute;
 	top: 0;
 	left: 0;
+}
+
+/*抽奖特效*/
+#lottery {
+	background: url(../images/bg.jpg) no-repeat;
+	width: 100%;
+}
+
+#lottery table td {
+	text-align: center;
+	font-size: 24px;
+	color: #333;
+	width: 25%;
+	border: 1px solid #b03dfc;
+	vertical-align: middle;
+	background: #fddb0d;
+	border-radius: 0.3rem;
+	height: 4rem;
+}
+
+#lottery table td a {
+	line-height: 150px;
+	display: block;
+	text-decoration: none;
+}
+
+#lottery table td.active {
+	background-color: #ea0000;
+}
+
+.awarad_i{
+	position: absolute;
+	top:0;
+	left: 0;
+	display: inline-block;
+	width: 25%;
+	height: 4rem;
+	box-sizing: border-box;
+	border: 3px solid #a62195;
 }

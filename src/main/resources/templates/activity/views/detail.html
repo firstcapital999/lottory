@@ -15,45 +15,41 @@
 	</head>
 	<body>
 		<div class="detail_bg">
-			<img class="detail_bg_img" src="/images/detail_bg.png" />
+			<img class="detail_bg_img" src="../images/detail_bg.png" />
 			<div class="actTime">
 				<p>在9月10日到10月10日</p>
 				<p>首次注册的用户均可以参与幸运大抽奖</p>
-				<p><h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1></p>
+				<!--<p><h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1></p>-->
+				<p><h1 th:inline="text">Hello 12312!</h1></p>
 			</div>
 			<div class="getAward_wrap3">
 				<div class="getAward_wrap2">
 					<div class="getAward_wrap1">
-						<div class="getAward">
-						<div class="list line1 border">
-							<img class="list_img" src="../images/iphone7.png"/>
-						</div><!--
-						--><div class="list line2 cr243884 border">会员体验</div><!--
-						--><div class="list border">
-							<img class="list_img" src="../images/shop.png"/>
-						</div><!--
-						--><div class="list line2 cr243884 border">会员体验</div><!--
-						--><div class="list2">
-							<div class="line3">
-								<div class="line3_left line2 cr243884 border">会员体验</div>
-								<div class="line3_left border">
-									<img class="list_img" src="../images/iphone7.png"/>
-								</div>
-							</div><!--
-						--><div class="line3_center a62195">
-							<img class="get_img" src="../images/get.png"/>
-						</div><!--
-						--><div class="line3">
-								<div class="line3_right border"><img class="list_img" src="../images/iphone6.png"/></div>
-								<div class="line3_right line2 cr243884 border">会员体验</div>
-							</div>
-						</div><!--
-						--><div class="list line2 cr243884 border">会员体验</div><!--
-						--><div class="list line2 cr243884 border"><img class="list_img height60" src="../images/ruyi.png"/>
-						</div><!--
-						--><div class="list border"><img class="list_img" src="../images/iphone7.png"/></div><!--
-						--><div class="list line4 cr243884 border">会员体验</div>
-					</div>
+                        <div id="lottery">
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td class="lottery-unit lottery-unit-0"><img  class="list_img" src="../images/iphone7.png"></td>
+                                    <td class="lottery-unit lottery-unit-1"><img  class="list_img" src="../images/vip.png"></td>
+                                    <td class="lottery-unit lottery-unit-2"><img  class="list_img" src="../images/shop.png"></td>
+                                    <td class="lottery-unit lottery-unit-3"><img  class="list_img" src="../images/iphone7.png"></td>
+                                </tr>
+                                <tr>
+                                    <td class="lottery-unit lottery-unit-11"><img  class="list_img" src="../images/vip.png"></td>
+                                    <td colspan="2" rowspan="2"   style="    background: #a62195;height: 7.5rem;"><img class="get_img" src="../images/get.png"></td>
+                                    <td class="lottery-unit lottery-unit-4"><img  class="list_img" src="../images/iphone6.png"></td>
+                                </tr>
+                                <tr>
+                                    <td class="lottery-unit lottery-unit-10"><img  class="list_img" src="../images/iphone7.png"></td>
+                                    <td class="lottery-unit lottery-unit-5"><img  class="list_img" src="../images/vip.png"></td>
+                                </tr>
+                                <tr>
+                                    <td class="lottery-unit lottery-unit-9"><img  class="list_img" src="../images/vip.png"></td>
+                                    <td class="lottery-unit lottery-unit-8"><img  class="list_img" src="../images/ruyi.png"></td>
+                                    <td class="lottery-unit lottery-unit-7"><img  class="list_img" src="../images/iphone7.png"></td>
+                                    <td class="lottery-unit lottery-unit-6"><img  class="list_img" src="../images/iphone6.png"></td>
+                                </tr>
+                            </table>
+                        </div>
 					</div>
 				</div>
 			</div>
@@ -119,5 +115,8 @@
 			<span class="login">登录</span>
 		</div>
 		<div id="zhezhao" class="hidden"></div>
+
+        <script src="../scripts/jquery-3.2.1.min.js"></script>
+        <script src="../scripts/lottery.js"></script>
 	</body>
 </html>
