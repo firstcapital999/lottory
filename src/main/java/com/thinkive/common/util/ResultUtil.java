@@ -1,5 +1,6 @@
-package com.thinkive.common.redis.util;
+package com.thinkive.common.util;
 
+import com.thinkive.common.constant.ExceptionConstant;
 import com.thinkive.common.entity.Result;
 
 /**
@@ -10,8 +11,8 @@ public class ResultUtil {
 
     public static Result success(Object object) {
         Result result = new Result();
-        result.setCode(0);
-        result.setMsg("成功");
+        result.setCode(ExceptionConstant.SUCCESS_CODE);
+        result.setMsg(ExceptionConstant.SUCCESS);
         result.setData(object);
         return result;
     }
@@ -24,6 +25,14 @@ public class ResultUtil {
         Result result = new Result();
         result.setCode(code);
         result.setMsg(msg);
+        return result;
+    }
+
+    public static Result error(Integer code, String msg,Object object) {
+        Result result = new Result();
+        result.setCode(code);
+        result.setMsg(msg);
+        result.setData(object);
         return result;
     }
 }

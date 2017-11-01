@@ -1,7 +1,9 @@
 package com.thinkive.lottery.controller;
 
-import com.thinkive.common.authority.entity.Role;
 import com.thinkive.common.authority.entity.User;
+import com.thinkive.common.entity.Result;
+import com.thinkive.common.util.ResultUtil;
+import com.thinkive.common.constant.ExceptionConstant;
 import com.thinkive.lottery.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,9 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * 用户登录注册控制器
@@ -62,29 +61,22 @@ public class UserController {
     }
 
     /**
-     * 用户注册
-     * @param user
-     * @param bindingResult
-     * @return
+     * @Describe 用户注册
+     * @param user 用户
+     * @param bindingResult 绑定的结果
+     * @return String
      */
     @PostMapping(value = "/regist")
-    public String save(@Valid User user, BindingResult bindingResult){
+    @ResponseBody
+    public  Result<User> save(@Valid User user, BindingResult bindingResult){
+        Result<User> result = new Result<User>();
         if (bindingResult.hasErrors()) {
-            throw new RuntimeException();
+            return ResultUtil.error(ExceptionConstant.ERROR_CODE,ExceptionConstant.CHECK_ERROR);
         }else{
-            String password = this.passwordEncoder.encode(user.getPassword());
-            user.setPassword(password);
-            user.setEnabled("1");
-            user.setRegistrationTime(new Date());
-            Set<Role> roles = new HashSet<Role>();
-            Role role = new Role();
-            role.setUser(user);
-            role.setRoleCode("admin");
-            role.setRoleName("管理员");
-            roles.add(role);
-            user.setRoles(roles);
-            this.userService.save(user);
-            return "/activity/views/login";
+            //注册用户
+             result  =this.userService.registerUser(user);
+
+            return result;
         }
     }
 

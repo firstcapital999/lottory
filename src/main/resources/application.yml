@@ -13,7 +13,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
   thymeleaf:
     cache: false
@@ -23,13 +23,16 @@ spring:
   redis:
     database: 0
     host: 120.77.200.240
-    port: 6379
+    port: 6399
     pool:
       max-active: 8
       min-idle: 0
       max-wait: -1
-    password: 123456
+    password: Th1nk!ve@20l&
     timeout: 0
+activity
+  beginDate: 2017-09-01 00:00:00
+  endDate: 2017-11-31 23:59:59
 
 #security:
   #basic:

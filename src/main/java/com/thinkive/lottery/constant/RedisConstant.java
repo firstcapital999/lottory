@@ -5,6 +5,10 @@ public class RedisConstant {
     public RedisConstant() {
     }
 
+    public static final String USER_PREFIX_KEY="user@";
+
+    public static final String USER_AWARD_PREFIX_KEY="userAward@";
+
     public static final String WX_STATE_LIST = "wx_state_list";
     public static String WX_LOCATION_LIST = "wx_location_list";
     public static String WX_CREATE_QRCODE_EXTENSION = "wx_create_qrcode_extension";

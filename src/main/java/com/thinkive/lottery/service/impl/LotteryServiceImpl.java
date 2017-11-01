@@ -1,16 +1,24 @@
 package com.thinkive.lottery.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.thinkive.common.authority.entity.User;
+import com.thinkive.common.entity.Result;
+import com.thinkive.common.util.ResultUtil;
+import com.thinkive.common.constant.ExceptionConstant;
 import com.thinkive.lottery.constant.RedisConstant;
 import com.thinkive.lottery.service.ILotteryService;
+import com.thinkive.lottery.service.IUserService;
 import com.thinkive.lottery.util.AliasMethod;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -21,8 +29,18 @@ public class LotteryServiceImpl implements ILotteryService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private IUserService userService;
+
+    @Value("${activity.beginDate}")
+    private String activityBeginDate;
+
+    @Value("${activity.endDate}")
+    private String activityEndDate;
+
+
     @Override
-    public Map<String, Object> lottery(RedisTemplate redisTemplate, String activityId) throws Exception {
+    public Map<String, Object> lottery(String activityId) throws Exception {
         /* 奖品概率集 */
         List<Double> prob = new ArrayList<Double>();
 
@@ -213,6 +231,95 @@ public class LotteryServiceImpl implements ILotteryService {
         {
             logger.error("活动抽奖业务服务接口出现异常!", e);
             throw new Exception("活动抽奖业务服务接口出现异常! 异常信息 :[" + e.getMessage() + "]");
+        }
+    }
+
+    @Override
+    public Result lotteryMain(String userName, String activityId) {
+        //获取用户信息
+        Result<User> userResult = this.userService.getUserForRedis(userName);
+        if(ExceptionConstant.SUCCESS_CODE!=userResult.getCode()){
+            return userResult;
+        }
+        //获取用户信息
+        User user = userResult.getData();
+
+        //判断用户是否有抽奖的资格
+        Result lotterAuthResult = this.validLotteryAuth(user);
+        if(ExceptionConstant.SUCCESS_CODE!=lotterAuthResult.getCode()){
+            return lotterAuthResult;
+        }
+
+        //执行抽奖操作
+
+        return null;
+    }
+
+
+    /**
+     * @Describe 验证用户抽奖权限
+     * @param user
+     * @return
+     */
+    private Result validLotteryAuth(User user){
+        //第一步校验用户是否活动期间内注册用户
+        Result activityAuthResult = this.validUserRegisterTime(user);
+        if(ExceptionConstant.SUCCESS_CODE!=activityAuthResult.getCode()){
+            return activityAuthResult;
+        }
+        Result userPrizeResult = this.validUserPrizeForRedis(user);
+        if(ExceptionConstant.SUCCESS_CODE!=userPrizeResult.getCode()){
+            return userPrizeResult;
+        }
+        return ResultUtil.success();
+    }
+
+
+
+    /**
+     * 验证用户是否是活动期间内注册的
+     * @param user
+     * @return
+     */
+    private Result validUserRegisterTime(User user){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date beginDate = null;
+        Date endDate = null;
+        try {
+            beginDate = format.parse(this.activityBeginDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return ResultUtil.error(ExceptionConstant.BEGINDATE_PARSE_ERROR_CODE,ExceptionConstant.BEGINDATE_PARSE_ERROR);
+        }
+        try {
+            endDate = format.parse(this.activityEndDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return ResultUtil.error(ExceptionConstant.ENDDATE_PARSE_ERROR_CODE,ExceptionConstant.ENDDATE_PARSE_ERROR);
+        }
+
+        Date registerTime = user.getRegistrationTime();
+
+        if(registerTime.getTime()<=endDate.getTime() && registerTime.getTime()>=beginDate.getTime()){
+            return ResultUtil.success();
+        }else{
+            return ResultUtil.error(ExceptionConstant.NON_ACTIVITY_PERIOD_CODE, ExceptionConstant.NON_ACTIVITY_PERIOD);
+        }
+
+    }
+
+
+    /**
+     * @Describe 检查用户是否抽奖
+     * @param user
+     * @return
+     */
+    private Result validUserPrizeForRedis(User user){
+        Object awardRecordObject = this.redisTemplate.opsForValue().get(RedisConstant.USER_AWARD_PREFIX_KEY+user.getUserName());
+        if(awardRecordObject!=null){
+            return ResultUtil.error(ExceptionConstant.HAS_DRAW_CODE,ExceptionConstant.HAS_DRAW,awardRecordObject);
+        }else{
+            return ResultUtil.success();
         }
     }
 }
