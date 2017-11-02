@@ -286,8 +286,18 @@ public class LotteryServiceImpl implements ILotteryService {
     }
 
 
-    private Result getAllAwardProbability(Map<String,Object> awardList){
+    private Result getAllAwardProbability(Map<String,Object> awardList,String activityId){
         //查询奖品剩余的数量
+        for(Map.Entry<String, Object> entry : awardList.entrySet()) {
+            String obj = (String) entry.getValue();
+            Map<String, Object> awrad = JSON.parseObject(obj);
+            String awardId = (String) awrad.get("id");
+            int limit = this.getAwardsNum(awardId,activityId);
+            if(limit>0){
+
+            }
+        }
+
 
 
 
@@ -295,9 +305,29 @@ public class LotteryServiceImpl implements ILotteryService {
     }
 
 
-    private Result getAwardsNum(String id){
-        this.redisTemplate.opsForHash().entries()
-        return null;
+    /**
+     * 获取redis奖品数量池中剩余的奖品数
+     * @param awardId
+     * @param activityId
+     * @return
+     */
+    private int getAwardsNum(String awardId,String activityId){
+        String awardPoolKey = RedisConstant.AWARD_POOL_NUM_PREFIX_KEY+activityId;
+        //默认返回数量为0
+        int num = 0;
+        String count = (String) redisTemplate.opsForHash().get(awardPoolKey,awardId);
+        if (count == null)
+        {
+            return num;
+        }else{
+            try {
+                num = Integer.parseInt(count);
+            }catch (Exception e){
+                e.printStackTrace();
+                num = 0;
+            }
+            return num;
+        }
     }
 
 
