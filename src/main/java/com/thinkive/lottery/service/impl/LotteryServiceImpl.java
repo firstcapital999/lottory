@@ -275,6 +275,8 @@ public class LotteryServiceImpl implements ILotteryService {
             return activityAwardList;
         }
         Map<String,Object> awardList = activityAwardList.getData();
+        //获取可抽取的奖品的概率集合
+
 
 
 
@@ -282,6 +284,23 @@ public class LotteryServiceImpl implements ILotteryService {
 
         return null;
     }
+
+
+    private Result getAllAwardProbability(Map<String,Object> awardList){
+        //查询奖品剩余的数量
+
+
+
+        return null;
+    }
+
+
+    private Result getAwardsNum(String id){
+        this.redisTemplate.opsForHash().entries()
+        return null;
+    }
+
+
 
 
     /**

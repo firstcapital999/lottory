@@ -7,7 +7,11 @@ public class RedisConstant {
 
     public static final String USER_PREFIX_KEY="user@";
 
+    //用户中奖信息key前缀
     public static final String USER_AWARD_PREFIX_KEY="userAward@";
+
+    //奖品列表key前缀
+    public static final String AWARD_LIST_PREFIX_KEY = "awardList@";
 
     public static final String WX_STATE_LIST = "wx_state_list";
     public static String WX_LOCATION_LIST = "wx_location_list";
