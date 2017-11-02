@@ -19,5 +19,19 @@ public interface ILotteryService {
      */
     public Map<String,Object> lottery(String activityId) throws Exception;
 
+    /**
+     * @Describe 抽奖主操作
+     * @param userName
+     * @param activityId
+     * @return
+     */
     public Result lotteryMain(String userName, String activityId);
+
+    /**
+     * @Describe 抽奖
+     * @param activityId
+     * @return
+     * @throws Exception
+     */
+    public Result lotteryDraw(String activityId) throws Exception;
 }

@@ -48,4 +48,9 @@ public class ExceptionConstant {
     public static final  String QUERY_NO_DATA = "查询不到数据";
 
 
+    public static final Integer QUERY_NO_ACTIVITY_AWARD_LIST_CODE = 9;
+
+    public static final String QUERY_NO_ACTIVITY_AWARD_LIST = "没有获取到活动对应奖品信息";
+
+
 }

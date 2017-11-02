@@ -252,6 +252,34 @@ public class LotteryServiceImpl implements ILotteryService {
 
         //执行抽奖操作
 
+
+
+        return null;
+    }
+
+    /**
+     * @param activityId
+     * @return
+     * @throws Exception
+     * @Describe 抽奖
+     */
+    @Override
+    public Result lotteryDraw(String activityId) throws Exception {
+         /* 奖品概率集 */
+        List<Double> prob = new ArrayList<Double>();
+        /* 奖品结果集 */
+        List<Map<String,Object>> selectAwardList = new ArrayList<Map<String,Object>>();
+        //获取活动奖品列表
+        Result<Map<String,Object>> activityAwardList = this.getActivityAwardList(activityId);
+        if(ExceptionConstant.SUCCESS_CODE!=activityAwardList.getCode()){
+            return activityAwardList;
+        }
+        Map<String,Object> awardList = activityAwardList.getData();
+
+
+
+
+
         return null;
     }
 
@@ -322,4 +350,25 @@ public class LotteryServiceImpl implements ILotteryService {
             return ResultUtil.success();
         }
     }
+
+
+    /**
+     * @Describe 获取活动对应的奖品列表
+     * @param activityId  活动ID
+     * @return
+     */
+    private Result<Map<String,Object>> getActivityAwardList(String activityId){
+
+        String awardListKey = RedisConstant.AWARD_LIST_PREFIX_KEY + activityId;
+        Map<String,Object> awardList =  redisTemplate.opsForHash().entries(awardListKey);
+        if ( awardList.size() == 0 )
+        {
+            return ResultUtil.error(ExceptionConstant.QUERY_NO_ACTIVITY_AWARD_LIST_CODE,ExceptionConstant.QUERY_NO_ACTIVITY_AWARD_LIST);
+        }else{
+            return ResultUtil.success(awardList);
+        }
+    }
+
+
+
 }
