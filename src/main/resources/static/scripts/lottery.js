@@ -10,6 +10,7 @@ var lottery={
     times:0,	//转动次数
     cycle:50,	//转动基本次数：即至少需要转动多少次再进入抽奖环节 ，顺时针旋转
     prize:-1,	//中奖位置
+    callback:null,
     init:function(id){
         /**
          * 获取奖品数量
@@ -57,7 +58,8 @@ function roll(){
         clearTimeout(lottery.timer);
         lottery.prize=-1;
         lottery.times=0;
-        click=false;
+        lottery.callback && lottery.callback();
+        _selfObj.click=false;
     }else{
 
         if (lottery.times<lottery.cycle) {
@@ -80,26 +82,126 @@ function roll(){
         if (lottery.speed<40) {
             lottery.speed=40;
         };
-        console.log(lottery.times+'^^^^^^'+lottery.speed+'^^^^^^^'+lottery.prize);
+        //console.log(lottery.times+'^^^^^^'+lottery.speed+'^^^^^^^'+lottery.prize);
         lottery.timer = setTimeout(roll,lottery.speed);
     }
     return false;
 }
-var click=false;
-window.onload=function(){
-    /**
-     * 初始化插件
-     */
-    lottery.init('lottery');
-    $("#lottery .get_img").click(function(){
-        if (click) {
-            return false;
-        }else{
-            lottery.prize = 2; //每次点击的时候如果是后端传中奖位置，则进行赋值。总奖品为12个，位置：0-11
-            lottery.speed=100;
-            roll();
-            click=true;
-            return false;
-        }
-    });
+
+/*==================================上面为抽奖逻辑=====================================================*/
+/**
+ * 定义奖品位置
+ * 1 :苹果7,2：苹果6，3：购物卡，4：玉如意，5：会员体验
+ * @type {{1: number[], 2: number[], 3: number[]}}
+ */
+var awardObj = {
+    1:[0,3,7,10],
+    2:[4,6],
+    3:[2],
+    4:[8],
+    5:[1,5,9,11]
 };
+
+/**
+ * 计算中奖位置，这个是根据需求来定。
+ * awardId:奖品id，由后端返回，前端根据awardObj + 业务需求计算停留的位置。
+ */
+function calculateAwardPositon(awardId){
+    //console.log('选中框移动到的位置'+_selfObj.initIx)
+    var awardPositon = 0; //默认第一个位置
+    for (var i = 0; i < awardObj[awardId].length - 1; i++) {
+        //console.log(awardObj[awardId][i])
+        if(awardObj[awardId][i] > _selfObj.initIx){
+            awardPositon = awardObj[awardId][i]; //将距离自动位置的最近奖品位置返回
+            break
+        }
+    }
+    return awardPositon;
+}
+/**
+ * 获取中奖位置
+ * @param req
+ */
+function getAwardPostion(req){
+    clearTimeout(_selfObj.timerIx);
+    _selfObj.data = req;
+    lottery.index = _selfObj.initIx;
+    lottery.prize = calculateAwardPositon(1); //每次点击的时候如果是后端传中奖位置，则进行赋值。总奖品为12个，位置：0-11
+    //console.log(lottery.prize)
+    lottery.speed=100;
+    lottery.callback = function (req) {
+        $('#zhezhao').removeClass('hidden');
+        $('#awarad_suc').removeClass('hidden');
+    };
+    roll();
+    _selfObj.click=true;
+}
+/**
+ * ajax
+ * @param data
+ * @param callback
+ */
+function getAjax(data,callback){
+    $.ajax({
+        url:'',
+        type:'post',
+        data:data||{},
+        success: function (req) {
+            callback && callback(req);
+        }
+    })
+}
+/**
+ * 让选择框自动移动起来
+ * @param index
+ * @param count
+ */
+function autoRun(index,count){
+    _selfObj.timerIx = setTimeout(function () {
+        _selfObj.initIx = index;
+        var $target  = $('#lottery');
+        //移除当前位置选中样式
+        $target.find(".lottery-unit-"+_selfObj.initIx).removeClass("active");
+        _selfObj.initIx += 1;
+        //如果默认的当前位置大于总奖品数量，则默认为第一个
+        if (_selfObj.initIx>count-1) {
+            _selfObj.initIx = 0;
+        }
+        //添加下一个位置选中样式
+        $target.find(".lottery-unit-"+_selfObj.initIx).addClass("active");
+        autoRun(_selfObj.initIx,count);
+    },800)
+}
+
+/**
+ * click：是否可以抽奖，反正dbouleclick
+ * initIx:记录选择框自动移动到的位置
+ * timeIx:记录定时器id
+ * data:中奖返回结果
+ * @type {{click: boolean, initIx: number, timerIx: number}}
+ * @private
+ */
+var _selfObj ={
+    click:false,
+    initIx : 0,
+    data:null,
+    timerIx: 0
+};
+/**
+ * 绑定点击事件
+ */
+$("#lottery .get_img").click(function(){
+    if (_selfObj.click) {
+        return false;
+    }else{
+        getAjax(null,getAwardPostion);
+        return false;
+    }
+});
+
+autoRun(0,12);
+
+/**
+ * 初始化插件
+ */
+lottery.init('lottery');
