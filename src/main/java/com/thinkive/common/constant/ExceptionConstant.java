@@ -52,5 +52,9 @@ public class ExceptionConstant {
 
     public static final String QUERY_NO_ACTIVITY_AWARD_LIST = "没有获取到活动对应奖品信息";
 
+    public static final Integer INIT_ERROR_PROBABILITY_CODE=10;
+
+    public static final String INIT_ERROR_PROBABILITY = "初始化抽奖概率失败";
+
 
 }

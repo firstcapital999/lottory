@@ -2,8 +2,6 @@ package com.thinkive.lottery.service;
 
 import com.thinkive.common.entity.Result;
 
-import java.util.Map;
-
 /**
  * @Describe 抽奖接口
  * @Author dengchangneng
@@ -11,13 +9,7 @@ import java.util.Map;
  */
 public interface ILotteryService {
 
-    /**
-     * @Describe 抽奖
-     * @param activityId
-     * @return
-     * @throws Exception
-     */
-    public Map<String,Object> lottery(String activityId) throws Exception;
+
 
     /**
      * @Describe 抽奖主操作
@@ -33,5 +25,5 @@ public interface ILotteryService {
      * @return
      * @throws Exception
      */
-    public Result lotteryDraw(String activityId) throws Exception;
+    public Result lotteryDraw(String activityId);
 }
