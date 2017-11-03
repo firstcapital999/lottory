@@ -13,6 +13,9 @@ public class RedisConstant {
     //奖品列表key前缀
     public static final String AWARD_LIST_PREFIX_KEY = "awardList@";
 
+    //奖品数量key前缀
+    public static final String AWARD_POOL_NUM_PREFIX_KEY = "awardPoolNum@";
+
     public static final String WX_STATE_LIST = "wx_state_list";
     public static String WX_LOCATION_LIST = "wx_location_list";
     public static String WX_CREATE_QRCODE_EXTENSION = "wx_create_qrcode_extension";
