@@ -30,7 +30,7 @@ spring:
       max-wait: -1
     password: Th1nk!ve@20l&
     timeout: 0
-activity
+activity:
   beginDate: 2017-09-01 00:00:00
   endDate: 2017-11-31 23:59:59
 
