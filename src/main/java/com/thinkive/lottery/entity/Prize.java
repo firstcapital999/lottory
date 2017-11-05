@@ -23,7 +23,7 @@ public class Prize {
 
     private Long remainingPrize;
 
-    @Column(columnDefinition="double(2,2) default '0.00'")
+    @Column(columnDefinition="double(4,2) default '0.00'")
     private Double prizeRate;
 
     @Column(columnDefinition = "char",length = 1)

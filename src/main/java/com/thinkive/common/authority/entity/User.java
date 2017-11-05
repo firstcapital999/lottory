@@ -26,7 +26,7 @@ public class User implements Serializable{
 
     private String enabled;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Role> roles;
 
     public User() {

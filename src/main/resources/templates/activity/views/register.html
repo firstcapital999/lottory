@@ -11,15 +11,15 @@
 	    <meta name="x5-page-mode" content="app"/>
 	    <meta name="msapplication-tap-highlight" content="no"/>
 		<title></title>
-		<link href="../css/style.css" rel="stylesheet" />
+		<link href="/css/style.css" rel="stylesheet" />
 	</head>
 	<body>
 		<div class="login_bg">
-			<img src="../images/login_bg.png" />
+			<img src="/images/login_bg.png" />
 		</div>
-		<form th:action="@{/regist}" method="post">
+		<form>
 		<div class="num">
-			<img src="../images/shouji.png"/><input class="numphone" type="number" name="userName" placeholder="请输入手机号" />
+			<img src="/images/shouji.png"/><input class="numphone" type="number" name="userName" placeholder="请输入手机号" />
 		</div>
 		
 		<!--<div class="num yzm">
@@ -27,12 +27,14 @@
 			
 		</div>-->
 		<div class="password">
-			<img src="../images/login_password.png"/><input class="numpassword" type="password" name="password" placeholder="请输入密码" />
+			<img src="/images/login_password.png"/><input class="numpassword" type="password" name="password" placeholder="请输入密码" />
 		</div>
 		<div class="password">
-			<img src="../images/login_password.png"/><input class="numpassword" type="password" name="password2"  placeholder="请再次输入密码" />
+			<img src="/images/login_password.png"/><input class="numpassword" type="password" name="password2"  placeholder="请再次输入密码" />
 		</div>
-		<span class="register"><button type="submit">注册</button></span>
+		<span class="register" id="register">注册</span>
 		</form>
+		<script src="scripts/jquery-3.2.1.min.js"></script>
+		<script src="scripts/register.js"></script>
 	</body>
 </html>

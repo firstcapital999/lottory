@@ -68,8 +68,8 @@ public class UserController {
      */
     @PostMapping(value = "/regist")
     @ResponseBody
-    public  Result<User> save(@Valid User user, BindingResult bindingResult){
-        Result<User> result = new Result<User>();
+    public  Result save(@Valid User user, BindingResult bindingResult){
+        Result result = new Result<User>();
         if (bindingResult.hasErrors()) {
             return ResultUtil.error(ExceptionConstant.ERROR_CODE,ExceptionConstant.CHECK_ERROR);
         }else{

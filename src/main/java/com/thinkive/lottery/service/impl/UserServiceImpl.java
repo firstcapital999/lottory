@@ -60,7 +60,7 @@ public class UserServiceImpl implements IUserService{
      * @return Result<User>
      */
     @Override
-    public Result<User> registerUser(User user) {
+    public Result registerUser(User user) {
         //对密码进行加密
         String password = this.passwordEncoder.encode(user.getPassword());
         //将user的明文密码替换成加密后的密码
@@ -71,7 +71,7 @@ public class UserServiceImpl implements IUserService{
         user = this.userRepository.save(user);
         //将注册的用户数据存放到redis
         this.saveUserToRedis(user);
-        return ResultUtil.success(user);
+        return ResultUtil.success();
     }
 
     /**
@@ -118,7 +118,7 @@ public class UserServiceImpl implements IUserService{
      */
     private void saveUserToRedis(User user){
 
-        this.redisTemplate.opsForValue().set(RedisConstant.USER_PREFIX_KEY+user.getId(), JSON.toJSONString(user));
+        this.redisTemplate.opsForValue().set(RedisConstant.USER_PREFIX_KEY+user.getUserName(), JSON.toJSONString(user));
 
 
     }

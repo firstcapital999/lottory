@@ -131,7 +131,8 @@ function getAwardPostion(req){
     lottery.speed=100;
     lottery.callback = function (req) {
         $('#zhezhao').removeClass('hidden');
-        $('#awarad_suc').removeClass('hidden');
+        $('.awarad_suc').removeClass('hidden');
+        autoRun(0,12);
     };
     roll();
     _selfObj.click=true;
@@ -199,9 +200,13 @@ $("#lottery .get_img").click(function(){
     }
 });
 
+
 autoRun(0,12);
 
 /**
  * 初始化插件
  */
 lottery.init('lottery');
+
+
+

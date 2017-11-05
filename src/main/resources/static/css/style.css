@@ -69,13 +69,21 @@ img {
 	border-radius: 0.3rem;
 }
 .getAward_wrap3{
+	width: 90%;
+	margin: 0 auto;
+	padding-top: 18px;
+}
+.awardBg{
+	background-image: url(/images/awardbg.png);
 	width: 80%;
-	border: 8px solid #b1259f;
-	background: url('/images/awardbg.png') ;
 	position: absolute;
 	left: 10%;
 	bottom: -1.5rem;
-	border-radius: 0.3rem;
+	height: 300px;
+	background-position: 0 0;
+	background-size: 100% 100%;
+	animation:bgAnimation 1s infinite;
+	-webkit-animation:bgAnimation 1s infinite; /* Safari 和 Chrome */
 }
 .getAward{
 	position: relative;
@@ -497,3 +505,25 @@ img {
 	box-sizing: border-box;
 	border: 3px solid #a62195;
 }
+
+
+@keyframes bgAnimation
+{
+	from {
+		background-image: url(/images/awardbg.png);
+	}
+	to {
+		background-image: url(/images/awardbg2.png);
+	}
+}
+
+@-webkit-keyframes bgAnimation /*Safari and Chrome*/
+{
+	from {
+		background-image: url(/images/awardbg.png);
+	}
+	to {
+		background-image: url(/images/awardbg2.png);
+	}
+}
+
