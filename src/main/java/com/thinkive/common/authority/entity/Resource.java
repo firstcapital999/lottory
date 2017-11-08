@@ -7,32 +7,41 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
- * Created by thinkive on 2017/10/9.
+ * @Describe 资源实体类
+ * @Author dengchangneng
+ * @CreateTime 2017年10月9日09:45:34
  */
 @Entity
-public class Resource implements Serializable{
+public class Resource implements Serializable {
 
+    //主键ID
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(name="url",length=1000)
-    private String url;//url
+    //url
+    @Column(name = "url", length = 1000)
+    private String url;
 
-    @Column(length=50)
-    private String resourceId;//资源ID
+    //资源ID
+    @Column(length = 50)
+    private String resourceId;
 
-    @Column(length=200)
-    private String remark;//备注
+    //备注
+    @Column(length = 200)
+    private String remark;
 
-    @Column(length=400)
-    private String resourceName;//资源名称
+    //资源名称
+    @Column(length = 400)
+    private String resourceName;
 
-    @Column(length=400)
-    private String methodName;//资源所对应的方法名
+    //资源所对应的方法名
+    @Column(length = 400)
+    private String methodName;
 
-    @Column(length=1000)
-    private String methodPath;//资源所对应的包路径
+    //资源所对应的包路径
+    @Column(length = 1000)
+    private String methodPath;
 
     public Resource() {
     }

@@ -4,21 +4,27 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by thinkive on 2017/10/9.
+ * @Describe 角色实体类
+ * @Author dengchangneng
+ * @CreateTime 2017年10月9日09:40:33
  */
 @Entity
-public class Role implements Serializable{
+public class Role implements Serializable {
 
+    //主键ID
     @Id
     @GeneratedValue
     private Long id;
 
+    //用户
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "u_id", nullable = false)
     private User user;
 
+    //角色名称
     private String roleName;
 
+    //角色编码
     private String roleCode;
 
     public Role() {

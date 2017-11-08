@@ -6,26 +6,35 @@ import java.util.Date;
 import java.util.Set;
 
 /**
- * Created by thinkive on 2017/10/8.
+ * @Describe 用户实体表
+ * @Author dengchangneng
+ * @CreateTime 2017年10月9日09:52:03
  */
 @Entity
-public class User implements Serializable{
+public class User implements Serializable {
 
+    //主键ID
     @Id
     @GeneratedValue
     private Long id;
 
+    //用户名
     private String userName;
 
+    //密码
     private String password;
 
+    //昵称
     private String nickName;
 
+    //注册时间
     @Column(columnDefinition = "timestamp default CURRENT_TIMESTAMP", nullable = false)
     private Date registrationTime;
 
+    //是否可用，0表示不可用，1表示可用
     private String enabled;
 
+    //角色
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Role> roles;
 

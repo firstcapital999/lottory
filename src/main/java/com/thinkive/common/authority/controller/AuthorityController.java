@@ -15,13 +15,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @Descibe 权限验证控制器
+ * @Author dengchangneng
+ * @CreateTime 2017年10月9日09:30:36
+ */
 @RestController
 public class AuthorityController {
 
+    //获取请求缓存
     private RequestCache requestCache = new HttpSessionRequestCache();
 
+    //重定向策略类
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
+    /**
+     * 验证方法：还没使用，针对不同的设备请求，返回不同的数据
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/authentication/require")
     @ResponseStatus(code= HttpStatus.UNAUTHORIZED)
     public String requireAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {

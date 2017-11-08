@@ -1,5 +1,6 @@
 package com.thinkive.common.authority.entity;
 
+
 public class SimpleResponse {
 
     public SimpleResponse(Object content){

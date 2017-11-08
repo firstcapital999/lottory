@@ -9,7 +9,9 @@ import java.util.Collection;
 import java.util.Set;
 
 /**
- * Created by thinkive on 2017/10/9.
+ * @Describe 用户验证实体类
+ * @Author dengchangneng
+ * @CreateTime 2017年10月9日09:42:27
  */
 public class SecurityUser extends User implements UserDetails {
 
@@ -25,6 +27,7 @@ public class SecurityUser extends User implements UserDetails {
         }
     }
 
+    //获取权限集合
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();

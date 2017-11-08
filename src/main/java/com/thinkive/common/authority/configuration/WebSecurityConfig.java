@@ -12,9 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 /**
- * Created by thinkive on 2017/10/9.
+ * @Describe 配置security拦截器
+ * @Author dengchangneng
+ * @CreateTime 2017年10月9日16:52:14
  */
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

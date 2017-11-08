@@ -7,23 +7,29 @@ import javax.persistence.Id;
 import java.util.Date;
 
 /**
- * Created by thinkive on 2017/10/9.
+ * @Describe 资源角色关系映射实体
+ * @Author dengchangnegn
+ * @CreateTime 2017年10月9日09:38:32
  */
 @Entity
 public class ResourceRole {
 
+    //主键ID
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(length=50)
-    private String roleId; //角色ID
+    //角色ID
+    @Column(length = 50)
+    private String roleId;
 
-    @Column(length=50)
-    private String resourceId;//资源ID
+    //资源ID
+    @Column(length = 50)
+    private String resourceId;
 
+    //更新时间
     @Column(columnDefinition = "timestamp default CURRENT_TIMESTAMP", nullable = false)
-    private Date updateTime;//更新时间
+    private Date updateTime;
 
     public ResourceRole() {
     }
