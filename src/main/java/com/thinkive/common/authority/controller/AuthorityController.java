@@ -31,21 +31,22 @@ public class AuthorityController {
 
     /**
      * 验证方法：还没使用，针对不同的设备请求，返回不同的数据
+     *
      * @param request
      * @param response
      * @return
      * @throws IOException
      */
     @RequestMapping(value = "/authentication/require")
-    @ResponseStatus(code= HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     public String requireAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        SavedRequest savedRequest = requestCache.getRequest(request,response);
-        if(savedRequest !=null){
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+        if (savedRequest != null) {
             String targetUrl = savedRequest.getRedirectUrl();
-            System.out.println("引发跳转的请求是："+targetUrl);
-            if(StringUtils.endsWithIgnoreCase(targetUrl,".html")){
-                redirectStrategy.sendRedirect(request,response,"/login.html");
-            }else{
+            System.out.println("引发跳转的请求是：" + targetUrl);
+            if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
+                redirectStrategy.sendRedirect(request, response, "/login.html");
+            } else {
 
             }
         }

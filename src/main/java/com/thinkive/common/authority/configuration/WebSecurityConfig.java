@@ -24,6 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private LotteryAuthenticationSuccessHandler lotteryAuthenticationSuccessHandler;
+
     //http://localhost:8080/login 输入正确的用户名密码 并且选中remember-me 则登陆成功，转到 index页面
     //再次访问index页面无需登录直接访问
     //访问http://localhost:8080/home 不拦截，直接访问，
@@ -32,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/","/home","/register","/regist/**","/testShort","/yourls/*","/images/**","/css/**","/scripts/**","/**/*.html").permitAll()//访问：/home 无需登录认证权限
+                .antMatchers("/", "/home", "/register", "/regist/**", "/testShort", "/yourls/*", "/images/**", "/css/**", "/scripts/**", "/**/*.html").permitAll()//访问：/home 无需登录认证权限
                 .anyRequest().authenticated() //其他所有资源都需要认证，登陆后访问
                 .antMatchers("/hello").hasAuthority("ADMIN") //登陆后之后拥有“ADMIN”权限才可以访问/hello方法，否则系统会出现“403”权限不足的提示
                 .and()
@@ -51,11 +52,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();//跨站防护关闭
     }
 
-   /* @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//指定密码加密所使用的加密器为passwordEncoder()
-//需要将密码加密后写入数据库
-        *//*auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+    /* @Autowired
+     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+ //指定密码加密所使用的加密器为passwordEncoder()
+ //需要将密码加密后写入数据库
+         *//*auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
         auth.eraseCredentials(false);*//*
         auth
                 .inMemoryAuthentication()
@@ -73,9 +74,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }*/
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         WebSecurityConfig webSecurityConfig = new WebSecurityConfig();
-    String pwd = webSecurityConfig.passwordEncoder().encode("123456");
-    System.out.print(pwd);
+        String pwd = webSecurityConfig.passwordEncoder().encode("123456");
+        System.out.print(pwd);
     }
 }
