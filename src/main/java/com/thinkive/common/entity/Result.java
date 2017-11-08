@@ -1,7 +1,9 @@
 package com.thinkive.common.entity;
 
 /**
- * Created by thinkive on 2017/10/11.
+ * @Describe 错误类
+ * @Author dengchangneng
+ * @CreateTime 2017年10月11日11:15:10
  */
 public class Result<T> {
 
