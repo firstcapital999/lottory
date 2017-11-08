@@ -10,6 +10,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * @Describe 登录校验类
+ * @Author dengchangnegn
+ * @CreateTime 2017年10月8日11:10:35
+ */
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired  //业务服务类
