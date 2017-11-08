@@ -2,31 +2,44 @@ package com.thinkive.lottery.entity;
 
 import javax.persistence.*;
 
+/**
+ * @Describe 奖项实体表
+ * @Author dengchangneng
+ * @CreateTime 2017年10月8日14:48:11
+ */
 @Entity
 public class Prize {
 
+    //主键ID
     @Id
     @GeneratedValue
     private Long id;
 
+    //活动
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "activity_id", nullable = false)
     private Activity activity;
 
-    @Column(columnDefinition = "char",length = 1)
+    //奖项
+    @Column(columnDefinition = "char", length = 1)
     private String prizeType;
 
+    //奖项名称
     @Column(length = 1024)
     private String prizeName;
 
+    //奖项总数
     private Long prizeTotalNum;
 
+    //剩余奖品数
     private Long remainingPrize;
 
-    @Column(columnDefinition="double(4,2) default '0.00'")
+    //中奖概率
+    @Column(columnDefinition = "double(4,2) default '0.00'")
     private Double prizeRate;
 
-    @Column(columnDefinition = "char",length = 1)
+    //是否可用，0表示可不用，1表示可用
+    @Column(columnDefinition = "char", length = 1)
     private String enabled;
 
     public Prize() {

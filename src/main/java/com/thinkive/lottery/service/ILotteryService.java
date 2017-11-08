@@ -10,20 +10,19 @@ import com.thinkive.common.entity.Result;
 public interface ILotteryService {
 
 
-
     /**
-     * @Describe 抽奖主操作
      * @param userName
      * @param activityId
      * @return
+     * @Describe 抽奖主操作
      */
     public Result lotteryMain(String userName, String activityId);
 
     /**
-     * @Describe 抽奖
      * @param activityId
      * @return
      * @throws Exception
+     * @Describe 抽奖
      */
     public Result lotteryDraw(String activityId);
 }

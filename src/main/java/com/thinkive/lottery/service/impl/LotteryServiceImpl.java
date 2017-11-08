@@ -21,24 +21,40 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * @Describe 抽奖服务实现类
+ * @Author dengchangneng
+ * @CreateTime 2017年10月8日14:57:22
+ */
 @Service
 public class LotteryServiceImpl implements ILotteryService {
 
+    //日志类
     private Logger logger = LoggerFactory.getLogger(LotteryServiceImpl.class);
 
+    //redis模板类
     @Autowired
     private RedisTemplate redisTemplate;
 
+    //用户服务类
     @Autowired
     private IUserService userService;
 
+    //从配置文件中读取活动开始时间
     @Value("${activity.beginDate}")
     private String activityBeginDate;
 
+    //从配置文件中读取活动结束时间
     @Value("${activity.endDate}")
     private String activityEndDate;
 
 
+    /**
+     * @param userName   用户名
+     * @param activityId 活动ID
+     * @return
+     * @Describe 抽奖主程序
+     */
     @Override
     public Result lotteryMain(String userName, String activityId) {
         //获取用户信息
@@ -50,7 +66,7 @@ public class LotteryServiceImpl implements ILotteryService {
         User userRedis = userResult.getData();
 
         //判断用户是否有抽奖的资格
-        Result lotterAuthResult = this.validLotteryAuth(userRedis,activityId);
+        Result lotterAuthResult = this.validLotteryAuth(userRedis, activityId);
         if (ExceptionConstant.SUCCESS_CODE != lotterAuthResult.getCode()) {
             return lotterAuthResult;
         }
@@ -63,13 +79,13 @@ public class LotteryServiceImpl implements ILotteryService {
         }
         Map<String, Object> prize = (Map<String, Object>) lotteryResult.getData();
         //插入中奖记录
-        Map<String,Object> prizeDetailMap = new HashMap<String,Object>();
-        prizeDetailMap.put("activityId",activityId);
-        prizeDetailMap.put("userId",userRedis.getId());
-        prizeDetailMap.put("prizeId",prize.get("id"));
-        prizeDetailMap.put("awardStatus","1");
-        prizeDetailMap.put("createTime",new Date());
-        this.redisTemplate.opsForList().leftPush(RedisConstant.USER_AWARD_PREFIX_KEY+activityId+userRedis.getId(),prizeDetailMap);
+        Map<String, Object> prizeDetailMap = new HashMap<String, Object>();
+        prizeDetailMap.put("activityId", activityId);
+        prizeDetailMap.put("userId", userRedis.getId());
+        prizeDetailMap.put("prizeId", prize.get("id"));
+        prizeDetailMap.put("awardStatus", "1");
+        prizeDetailMap.put("createTime", new Date());
+        this.redisTemplate.opsForList().leftPush(RedisConstant.USER_AWARD_PREFIX_KEY + activityId + userRedis.getId(), prizeDetailMap);
         return ResultUtil.success(prizeDetailMap);
     }
 
@@ -119,10 +135,10 @@ public class LotteryServiceImpl implements ILotteryService {
         if (selectAward != null) {
             //判断是否是默认的奖品，如果不是，进行更新库存操作
             String prizeType = (String) selectAward.get("prizeType");
-            if(!"1".equals(prizeType)){
-                Long limit = this.redisTemplate.opsForHash().increment(RedisConstant.AWARD_POOL_NUM_PREFIX_KEY,String.valueOf(selectAward.get("id")),-1 );
-                if(limit<0){
-                    return ResultUtil.error(ExceptionConstant.NO_PRIZE_CODE,ExceptionConstant.NO_PRIZE);
+            if (!"1".equals(prizeType)) {
+                Long limit = this.redisTemplate.opsForHash().increment(RedisConstant.AWARD_POOL_NUM_PREFIX_KEY, String.valueOf(selectAward.get("id")), -1);
+                if (limit < 0) {
+                    return ResultUtil.error(ExceptionConstant.NO_PRIZE_CODE, ExceptionConstant.NO_PRIZE);
                 }
             }
 
@@ -133,12 +149,17 @@ public class LotteryServiceImpl implements ILotteryService {
     }
 
 
+    /**
+     * @param selectAwardList 奖品选项
+     * @return
+     * @Describe 生成奖品概率
+     */
     private Result<List<Double>> generatorAwardProbability(List<Map<String, Object>> selectAwardList) {
         List<Double> prob = new ArrayList<Double>();
         try {
                 /* 遍历所有奖品,取得奖品概率生成随机算法计算规则 */
             for (Map<String, Object> ps : selectAwardList) {
-                double rate = ((BigDecimal)ps.get("prizeRate")).doubleValue();
+                double rate = ((BigDecimal) ps.get("prizeRate")).doubleValue();
                 double tmp = rate / 100;
                 prob.add(tmp);
             }
@@ -154,26 +175,31 @@ public class LotteryServiceImpl implements ILotteryService {
 
 
     /**
-     * 补充默认的奖品
-     *
      * @param selectAwardList
      * @param probabilityTotal
      * @return
+     * @Describe 补充默认的奖品
      */
     private List<Map<String, Object>> supplementDefaultAward(List<Map<String, Object>> selectAwardList, double probabilityTotal) {
         Map<String, Object> pullPrize = new HashMap<String, Object>();
         pullPrize.put("activityId", "1"); //补充活动ID
-        pullPrize.put("enabled","1");
-        pullPrize.put("prizeName","会员体验");
-        pullPrize.put("prizeType","1");
-        BigDecimal bigDecimal = new BigDecimal(100-probabilityTotal);
-        pullPrize.put("prizeRate",bigDecimal);
-        pullPrize.put("id",9);
+        pullPrize.put("enabled", "1");
+        pullPrize.put("prizeName", "会员体验");
+        pullPrize.put("prizeType", "1");
+        BigDecimal bigDecimal = new BigDecimal(100 - probabilityTotal);
+        pullPrize.put("prizeRate", bigDecimal);
+        pullPrize.put("id", 9);
         selectAwardList.add(pullPrize);
         return selectAwardList;
     }
 
 
+    /**
+     * @param awardList  奖品集合
+     * @param activityId 活动id
+     * @return
+     * @Describe 获取所有的奖品概率
+     */
     private Map<String, Object> getAllAwardProbability(Map<String, Object> awardList, String activityId) {
         //返回的结果集
         Map<String, Object> result = new HashMap<String, Object>();
@@ -192,7 +218,7 @@ public class LotteryServiceImpl implements ILotteryService {
             int limit = this.getAwardsNum(awardId, activityId);
             if (limit > 0) {
                 // 取出当前概率
-                double probability = ((BigDecimal)awrad.get("prizeRate")).doubleValue();
+                double probability = ((BigDecimal) awrad.get("prizeRate")).doubleValue();
                 probabilityTotal += probability;
                 selectAwardList.add(awrad);
             } else {
@@ -206,11 +232,10 @@ public class LotteryServiceImpl implements ILotteryService {
 
 
     /**
-     * 获取redis奖品数量池中剩余的奖品数
-     *
      * @param awardId
      * @param activityId
      * @return
+     * @Describe 获取redis奖品数量池中剩余的奖品数
      */
     private int getAwardsNum(String awardId, String activityId) {
         String awardPoolKey = RedisConstant.AWARD_POOL_NUM_PREFIX_KEY + activityId;
@@ -236,13 +261,13 @@ public class LotteryServiceImpl implements ILotteryService {
      * @return
      * @Describe 验证用户抽奖权限
      */
-    private Result validLotteryAuth(User user,String activityId) {
+    private Result validLotteryAuth(User user, String activityId) {
         //第一步校验用户是否活动期间内注册用户
         Result activityAuthResult = this.validUserRegisterTime(user);
         if (ExceptionConstant.SUCCESS_CODE != activityAuthResult.getCode()) {
             return activityAuthResult;
         }
-        Result userPrizeResult = this.validUserPrizeForRedis(user,activityId);
+        Result userPrizeResult = this.validUserPrizeForRedis(user, activityId);
         if (ExceptionConstant.SUCCESS_CODE != userPrizeResult.getCode()) {
             return userPrizeResult;
         }
@@ -251,10 +276,9 @@ public class LotteryServiceImpl implements ILotteryService {
 
 
     /**
-     * 验证用户是否是活动期间内注册的
-     *
      * @param user
      * @return
+     * @Describe 验证用户是否是活动期间内注册的
      */
     private Result validUserRegisterTime(User user) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -289,8 +313,8 @@ public class LotteryServiceImpl implements ILotteryService {
      * @return
      * @Describe 检查用户是否抽奖
      */
-    private Result validUserPrizeForRedis(User user,String activityId) {
-        Object awardRecordObject = this.redisTemplate.opsForValue().get(RedisConstant.USER_AWARD_PREFIX_KEY + activityId+user.getId());
+    private Result validUserPrizeForRedis(User user, String activityId) {
+        Object awardRecordObject = this.redisTemplate.opsForValue().get(RedisConstant.USER_AWARD_PREFIX_KEY + activityId + user.getId());
         if (awardRecordObject != null) {
             return ResultUtil.error(ExceptionConstant.HAS_DRAW_CODE, ExceptionConstant.HAS_DRAW, awardRecordObject);
         } else {

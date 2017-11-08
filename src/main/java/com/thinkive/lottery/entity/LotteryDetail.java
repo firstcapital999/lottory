@@ -13,7 +13,7 @@ import java.util.Date;
  * @createTime 2017年11月1日15:37:34
  */
 @Entity
-public class LotteryDetail implements Serializable{
+public class LotteryDetail implements Serializable {
     /**
      * 主键
      */
@@ -42,7 +42,8 @@ public class LotteryDetail implements Serializable{
     @Column(columnDefinition = "timestamp default CURRENT_TIMESTAMP", nullable = false)
     private Date createTime;
 
-    @Column(columnDefinition = "char",length = 1)
+    //中奖状态
+    @Column(columnDefinition = "char", length = 1)
     private String awardStatus;
 
 

@@ -5,14 +5,16 @@ import com.thinkive.lottery.entity.Prize;
 import java.util.List;
 
 /**
- * Created by thinkive on 2017/11/5.
+ * @Describe 奖项服务类
+ * @Author dengchangneng
+ * @CreateTime 2017年11月5日15:19:06
  */
 public interface IPrizeService {
 
     /**
-     * @Describe 根据活动id查询该活动的所有奖品信息
      * @param activityId
      * @return
+     * @Describe 根据活动id查询该活动的所有奖品信息
      */
     public List<Prize> getPrizeListByActivityId(Long activityId);
 }

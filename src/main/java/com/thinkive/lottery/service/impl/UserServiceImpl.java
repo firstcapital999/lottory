@@ -23,12 +23,13 @@ import java.util.Set;
 
 /**
  * @Describe 用户相关服务类
- * @auther  dengchangneng
+ * @auther dengchangneng
  * @create 2017年11月1日13:25:22
  */
 @Service
-public class UserServiceImpl implements IUserService{
+public class UserServiceImpl implements IUserService {
 
+    //日志类
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     //用户表操作JPA接口
@@ -45,9 +46,9 @@ public class UserServiceImpl implements IUserService{
     private RedisTemplate redisTemplate;
 
     /**
-     * @Descibe 用户信息保存
      * @param user
      * @return User
+     * @Descibe 用户信息保存
      */
     @Override
     public User save(User user) {
@@ -55,9 +56,9 @@ public class UserServiceImpl implements IUserService{
     }
 
     /**
-     * @Describe 注册用户信息
      * @param user
      * @return Result<User>
+     * @Describe 注册用户信息
      */
     @Override
     public Result registerUser(User user) {
@@ -75,28 +76,28 @@ public class UserServiceImpl implements IUserService{
     }
 
     /**
-     * @Describe 通过用户名查询用户信息
      * @param userName 用户名
      * @return User
+     * @Describe 通过用户名查询用户信息
      */
     @Override
     public Result<User> getUserForRedis(String userName) {
-        Object userObject = this.redisTemplate.opsForValue().get(RedisConstant.USER_PREFIX_KEY+userName);
-        if(userObject !=null){
-            User user = JSON.parseObject(userObject.toString(),User.class);
+        Object userObject = this.redisTemplate.opsForValue().get(RedisConstant.USER_PREFIX_KEY + userName);
+        if (userObject != null) {
+            User user = JSON.parseObject(userObject.toString(), User.class);
 
             return ResultUtil.success(user);
-        }else{
-            return ResultUtil.error(ExceptionConstant.QUERY_NO_DATA_CODE,ExceptionConstant.QUERY_NO_DATA);
+        } else {
+            return ResultUtil.error(ExceptionConstant.QUERY_NO_DATA_CODE, ExceptionConstant.QUERY_NO_DATA);
         }
     }
 
     /**
-     * @Describe 初始化注册参数
      * @param user
      * @return
+     * @Describe 初始化注册参数
      */
-    private User initDefaultRegisterParams(User user){
+    private User initDefaultRegisterParams(User user) {
         //默认注册设置账号可用
         user.setEnabled(UserConstant.ACCOUNT_ENABLED);
         //记录服务器时间为注册时间
@@ -112,19 +113,19 @@ public class UserServiceImpl implements IUserService{
     }
 
     /**
-     * @Describe 保存用户信息到redis中
      * @param user 用户信息
      * @return
+     * @Describe 保存用户信息到redis中
      */
-    private void saveUserToRedis(User user){
+    private void saveUserToRedis(User user) {
 
-        this.redisTemplate.opsForValue().set(RedisConstant.USER_PREFIX_KEY+user.getUserName(), JSON.toJSONString(user));
+        this.redisTemplate.opsForValue().set(RedisConstant.USER_PREFIX_KEY + user.getUserName(), JSON.toJSONString(user));
 
 
     }
 
 
-    public static void main(String args[]){
+    public static void main(String args[]) {
         User user = new User();
         user.setPassword("12323");
         //默认注册设置账号可用

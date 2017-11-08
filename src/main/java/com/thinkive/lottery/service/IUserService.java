@@ -11,24 +11,24 @@ import com.thinkive.common.entity.Result;
 public interface IUserService {
 
     /**
-     * @Describe 保存用户信息
      * @param user
      * @return
+     * @Describe 保存用户信息
      */
     public User save(User user);
 
     /**
-     * @Describe 注册用户信息
      * @param user
      * @return
+     * @Describe 注册用户信息
      */
     public Result registerUser(User user);
 
 
     /**
-     * @Describe 通过用户名查询用户信息
      * @param userName 用户名
      * @return User
+     * @Describe 通过用户名查询用户信息
      */
     public Result<User> getUserForRedis(String userName);
 }
