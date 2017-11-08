@@ -22,7 +22,7 @@ public interface IUserService {
      * @param user
      * @return
      */
-    public Result<User> registerUser(User user);
+    public Result registerUser(User user);
 
 
     /**
@@ -30,5 +30,5 @@ public interface IUserService {
      * @param userName 用户名
      * @return User
      */
-    public Result getUserForRedis(String userName);
+    public Result<User> getUserForRedis(String userName);
 }

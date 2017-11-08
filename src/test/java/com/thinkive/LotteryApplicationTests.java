@@ -1,5 +1,12 @@
 package com.thinkive;
 
+import com.thinkive.common.authority.entity.Role;
+import com.thinkive.common.authority.entity.User;
+import com.thinkive.common.entity.Result;
+import com.thinkive.lottery.constant.RedisConstant;
+import com.thinkive.lottery.constant.UserConstant;
+import com.thinkive.lottery.dao.UserRepository;
+import com.thinkive.lottery.service.ILotteryService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +24,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class LotteryApplicationTests {
@@ -29,6 +40,12 @@ public class LotteryApplicationTests {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ILotteryService lotteryService;
 
     private MockMvc mockMvc;
 
@@ -66,6 +83,36 @@ public class LotteryApplicationTests {
     public void testRedis2() throws  Exception{
         stringRedisTemplate.opsForValue().set("aaa", "111");
         Assert.assertEquals("111", stringRedisTemplate.opsForValue().get("aaa"));
+    }
+
+    @Test
+    public void testSaveUser() throws Exception{
+        User user  = new User();
+        user.setEnabled("1");
+        user.setUserName("13456544323");
+        user.setPassword("12345678");
+        user.setRegistrationTime(new Date());
+        Set<Role> roles = new HashSet<Role>();
+        Role role = new Role();
+        role.setRoleCode(UserConstant.ADMIN_CODE);
+        role.setRoleName(UserConstant.ADMIN_NAME);
+        role.setUser(user);
+        roles.add(role);
+        user.setRoles(roles);
+        user = this.userRepository.save(user);
+    }
+
+
+    @Test
+    public void testRedisIncrement(){
+        this.redisTemplate.opsForHash().increment(RedisConstant.AWARD_POOL_NUM_PREFIX_KEY+"1","1",1 );
+    }
+
+    @Test
+    public void testLottery(){
+
+        Result result = this.lotteryService.lotteryMain("18670014155","1");
+        System.out.print(result.getCode());
     }
 
 }

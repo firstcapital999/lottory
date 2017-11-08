@@ -69,12 +69,21 @@ img {
 	border-radius: 0.3rem;
 }
 .getAward_wrap3{
+	width: 90%;
+	margin: 0 auto;
+	padding-top: 18px;
+}
+.awardBg{
+	background-image: url(/images/awardbg.png);
 	width: 80%;
-	border: 8px solid #b1259f;
 	position: absolute;
 	left: 10%;
 	bottom: -1.5rem;
-	border-radius: 0.3rem;
+	height: 300px;
+	background-position: 0 0;
+	background-size: 100% 100%;
+	animation:bgAnimation 1s infinite;
+	-webkit-animation:bgAnimation 1s infinite; /* Safari 和 Chrome */
 }
 .getAward{
 	position: relative;
@@ -453,7 +462,6 @@ img {
 	height: 100%;
 	background: #333;
 	opacity: 0.7;
-	z-index: 9999;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -461,7 +469,7 @@ img {
 
 /*抽奖特效*/
 #lottery {
-	background: url(../images/bg.jpg) no-repeat;
+	background: url(images/bg.jpg) no-repeat;
 	width: 100%;
 }
 
@@ -497,3 +505,25 @@ img {
 	box-sizing: border-box;
 	border: 3px solid #a62195;
 }
+
+
+@keyframes bgAnimation
+{
+	from {
+		background-image: url(/images/awardbg.png);
+	}
+	to {
+		background-image: url(/images/awardbg2.png);
+	}
+}
+
+@-webkit-keyframes bgAnimation /*Safari and Chrome*/
+{
+	from {
+		background-image: url(/images/awardbg.png);
+	}
+	to {
+		background-image: url(/images/awardbg2.png);
+	}
+}
+

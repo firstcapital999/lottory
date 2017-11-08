@@ -13,7 +13,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
   thymeleaf:
     cache: false
@@ -28,9 +28,10 @@ spring:
       max-active: 8
       min-idle: 0
       max-wait: -1
-    password: Th1nk!ve@20l&
+    password: Th1nkdcn
     timeout: 0
-activity
+activity:
+  id: 1
   beginDate: 2017-09-01 00:00:00
   endDate: 2017-11-31 23:59:59
 

@@ -6,12 +6,10 @@ import java.util.Date;
 import java.util.Set;
 
 /**
- * @Describe 用户实体表
- * @Author dengchangneng
- * @CreateTime 2017年10月9日09:52:03
+ * Created by thinkive on 2017/10/8.
  */
 @Entity
-public class User implements Serializable {
+public class User implements Serializable{
 
     //主键ID
     @Id
@@ -34,8 +32,7 @@ public class User implements Serializable {
     //是否可用，0表示不可用，1表示可用
     private String enabled;
 
-    //角色
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Role> roles;
 
     public User() {

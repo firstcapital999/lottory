@@ -56,5 +56,14 @@ public class ExceptionConstant {
 
     public static final String INIT_ERROR_PROBABILITY = "初始化抽奖概率失败";
 
+    public static final Integer USER_NOT_LOGIN_CODE = 11;
+
+    public static final String USER_NOT_LOGIN = "用户没有登录";
+
+    public static final Integer NO_PRIZE_CODE= 12;
+
+    public static final String NO_PRIZE = "没有奖品可抽";
+
+
 
 }
