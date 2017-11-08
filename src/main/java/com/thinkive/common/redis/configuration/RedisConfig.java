@@ -19,6 +19,11 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
 import java.lang.reflect.Method;
 
+/**
+ * @Describe redis配置注册类
+ * @Author dengchangneng
+ * @CreateTime 2017年11月1日11:51:36
+ */
 @Configuration
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
@@ -33,14 +38,14 @@ public class RedisConfig extends CachingConfigurerSupport {
     private String password;
 
     @Bean
-    public KeyGenerator wiselyKeyGenerator(){
+    public KeyGenerator wiselyKeyGenerator() {
         return new KeyGenerator() {
             @Override
             public Object generate(Object o, Method method, Object... objects) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(o.getClass().getName());
                 sb.append(method.getName());
-                for (Object obj : objects){
+                for (Object obj : objects) {
                     sb.append(obj.toString());
                 }
                 return sb.toString();
@@ -49,7 +54,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     }
 
     @Bean
-    public JedisConnectionFactory redisConnectionFactory(){
+    public JedisConnectionFactory redisConnectionFactory() {
         JedisConnectionFactory factory = new JedisConnectionFactory();
         factory.setHostName(host);
         factory.setPort(port);
@@ -59,21 +64,21 @@ public class RedisConfig extends CachingConfigurerSupport {
     }
 
     @Bean
-    public CacheManager cacheManager(RedisTemplate redisTemplate){
+    public CacheManager cacheManager(RedisTemplate redisTemplate) {
         RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
         cacheManager.setDefaultExpiration(10);  //设置 key-value 超时时间
         return cacheManager;
     }
 
     @Bean
-    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory){
+    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
         StringRedisTemplate template = new StringRedisTemplate(factory);
         setSerializer(template);    //设置序列化工具，就不必实现Serializable接口
         template.afterPropertiesSet();
         return template;
     }
 
-    private void setSerializer(StringRedisTemplate template){
+    private void setSerializer(StringRedisTemplate template) {
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);

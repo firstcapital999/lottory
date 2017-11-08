@@ -17,7 +17,7 @@ public class UserConstant {
     public static final String ADMIN_CODE="admin";
 
     //管理员账号名称
-    public static final String ADMIN_NAME="管理员账号";
+    public static final String ADMIN_NAME = "管理员账号";
 
 
 

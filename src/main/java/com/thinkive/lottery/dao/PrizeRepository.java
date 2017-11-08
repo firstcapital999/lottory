@@ -6,10 +6,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * Created by thinkive on 2017/11/5.
+ * @Describe 奖项数据操作JPA接口类
+ * @Author dengchangneng
+ * @CreateTime 2017年11月5日10:34:35
  */
 public interface PrizeRepository extends JpaRepository<Prize,Long> {
 
+    /**
+     * @Describe 通过活动ID获取奖项集合
+     * @param activityId
+     * @return
+     */
     List<Prize> findByActivityId(Long activityId);
 
 }

@@ -14,7 +14,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by thinkive on 2017/10/8.
+ * @Describe 测试控制器类
+ * @Author dengchangnegn
+ * @CreateTime 2017年10月8日12:19:36
  */
 @Controller
 @EnableSwagger2
@@ -29,14 +31,14 @@ public class HelloWorldController {
     @GetMapping(value = "/findAll")
     @ResponseBody
     @ApiOperation(value = "查询所有的方法")
-    public List<User> userList(){
+    public List<User> userList() {
         return this.userRepository.findAll();
     }
 
     @PostMapping(value = "/insert")
     @ResponseBody
     @Transactional
-    public User userAdd(@RequestParam("userName") String userName,@RequestParam("password") String password){
+    public User userAdd(@RequestParam("userName") String userName, @RequestParam("password") String password) {
         User user = new User();
         user.setUserName(userName);
         user.setPassword(password);
@@ -46,16 +48,15 @@ public class HelloWorldController {
 
     }
 
-   @GetMapping(value = "/home")
-    public String getHome(){
+    @GetMapping(value = "/home")
+    public String getHome() {
 
         return "/activity/views/detail";
     }
 
 
-
     @GetMapping(value = "/testShort")
-    public String testShort(){
+    public String testShort() {
         return "redirect:http://www.baidu.com";
     }
 
@@ -64,10 +65,6 @@ public class HelloWorldController {
     public String shortUrl(@PathVariable("id") Integer id) {
         return "redirect:http://www.baidu.com";
     }
-
-
-
-
 
 
 }

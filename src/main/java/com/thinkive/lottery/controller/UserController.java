@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.validation.Valid;
 
 /**
- * 用户登录注册控制器
  * @author dengchengneng
+ * @Describe 用户登录注册控制器
  * @createDate 2017年10月26日14:15:57
  */
 @Controller
@@ -45,66 +45,66 @@ public class UserController {
 
 
     /**
-     * 验证用户是否登录
      * @param user
      * @return
+     * @Describe 验证用户是否登录
      */
     @RequestMapping(value = "checkUser")
     @ResponseBody
-    public String checkUserLogin(@AuthenticationPrincipal UserDetails user){
-        if(user!=null){
+    public String checkUserLogin(@AuthenticationPrincipal UserDetails user) {
+        if (user != null) {
             System.out.println("用户不为空");
-        }else{
+        } else {
             System.out.println("用户为空");
         }
         return null;
     }
 
     /**
-     * @Describe 用户注册
-     * @param user 用户
+     * @param user          用户
      * @param bindingResult 绑定的结果
      * @return String
+     * @Describe 用户注册
      */
     @PostMapping(value = "/regist")
     @ResponseBody
-    public  Result save(@Valid User user, BindingResult bindingResult){
+    public Result save(@Valid User user, BindingResult bindingResult) {
         Result result = new Result<User>();
         if (bindingResult.hasErrors()) {
-            return ResultUtil.error(ExceptionConstant.ERROR_CODE,ExceptionConstant.CHECK_ERROR);
-        }else{
+            return ResultUtil.error(ExceptionConstant.ERROR_CODE, ExceptionConstant.CHECK_ERROR);
+        } else {
             //注册用户
-             result  =this.userService.registerUser(user);
+            result = this.userService.registerUser(user);
 
             return result;
         }
     }
 
     /**
-     * 用户首页
      * @return
+     * @Describe 用户首页
      */
     @GetMapping(value = "/")
-    public String getIndex(){
+    public String getIndex() {
 
         return "/activity/views/detail";
     }
 
     /**
-     * 登录页面
      * @return
+     * @Describe 登录页面
      */
     @GetMapping(value = "/login")
-    public String login(){
+    public String login() {
         return "/activity/views/login";
     }
 
     /**
-     * 注册页面
      * @return
+     * @Describe 注册页面
      */
     @GetMapping(value = "/register")
-    public String register(){
+    public String register() {
         return "/activity/views/register";
     }
 }
