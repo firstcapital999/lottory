@@ -61,11 +61,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();//跨站防护关闭
     }
 
-    /* @Autowired
-     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
- //指定密码加密所使用的加密器为passwordEncoder()
- //需要将密码加密后写入数据库
-         *//*auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+   /* @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//指定密码加密所使用的加密器为passwordEncoder()
+//需要将密码加密后写入数据库
+        *//*auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
         auth.eraseCredentials(false);*//*
         auth
                 .inMemoryAuthentication()
