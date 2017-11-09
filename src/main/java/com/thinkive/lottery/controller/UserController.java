@@ -51,13 +51,12 @@ public class UserController {
      */
     @RequestMapping(value = "checkUser")
     @ResponseBody
-    public String checkUserLogin(@AuthenticationPrincipal UserDetails user) {
+    public Result checkUserLogin(@AuthenticationPrincipal UserDetails user) {
         if (user != null) {
-            System.out.println("用户不为空");
+            return ResultUtil.success();
         } else {
-            System.out.println("用户为空");
+            return ResultUtil.error(ExceptionConstant.ERROR_CODE,ExceptionConstant.ERROR);
         }
-        return null;
     }
 
     /**

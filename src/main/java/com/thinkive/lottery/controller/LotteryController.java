@@ -36,7 +36,7 @@ public class LotteryController {
      * @Describe 抽奖
      */
     /*@GetMapping(value = "/lottery")*/
-    @RequestMapping(value = "/lottery",method = RequestMethod.GET)
+    @RequestMapping(value = "/lottery",method = RequestMethod.POST)
     public Result lottery(@AuthenticationPrincipal UserDetails user) {
 
         //如果user为空，则未登录，不为空则已登录
