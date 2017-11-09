@@ -142,19 +142,6 @@ function getAwardPostion(req) {
 }
 
 
-function checkUserLogin() {
-
-    $.post('/checkUser', function (data) {
-        debugger;
-        if (data.code == 0) {
-            return true;
-        } else {
-            return false;
-        }
-
-    })
-
-}
 
 /**
  * ajax
@@ -167,7 +154,6 @@ function getAjax(data, callback) {
         type: 'post',
         data: data || {},
         success: function (req) {
-            debugger;
             callback && callback(req);
         }
     })
@@ -216,15 +202,13 @@ $("#lottery .get_img").click(function () {
     if (_selfObj.click) {
         return false;
     } else {
-        var loginFlag = false;
-        debugger;
-        loginFlag = checkUserLogin();
-        if (loginFlag == true) {
-
-            getAjax(null, getAwardPostion);
-        } else {
-           window.location.href="/login";
-        }
+        $.post('/checkUser', function (data) {
+            if (data.code == 0) {
+                getAjax(null, getAwardPostion);
+            } else {
+                window.location.href = "/login";
+            }
+        });
 
         return false;
     }
