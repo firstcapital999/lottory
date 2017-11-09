@@ -4,13 +4,14 @@ import com.thinkive.common.constant.ExceptionConstant;
 import com.thinkive.common.entity.Result;
 import com.thinkive.common.util.ResultUtil;
 import com.thinkive.lottery.service.ILotteryService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @Describe 抽奖控制器类
@@ -18,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @createTime 2017年10月26日12:27:53
  */
 @RestController
-@EnableSwagger2
+@Api("抽奖相关API")
 public class LotteryController {
 
     //活动ID
@@ -34,7 +35,8 @@ public class LotteryController {
      * @return
      * @Describe 抽奖
      */
-    @GetMapping(value = "/lottery")
+    /*@GetMapping(value = "/lottery")*/
+    @RequestMapping(value = "/lottery",method = RequestMethod.GET)
     public Result lottery(@AuthenticationPrincipal UserDetails user) {
 
         //如果user为空，则未登录，不为空则已登录

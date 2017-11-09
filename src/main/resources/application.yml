@@ -34,6 +34,19 @@ activity:
   id: 1
   beginDate: 2017-09-01 00:00:00
   endDate: 2017-11-31 23:59:59
+swagger:
+  base-package: com.thinkive
+  title: 抽奖
+  description: 抽奖API
+  version: 1.1.0.RELEASE
+  license: Apache License, Version 2.0
+  license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+  terms-of-service-url: https://github.com/dyc87112/spring-boot-starter-swagger
+  contact:
+    name: dengchangneng
+    email: 382517195@qq.com
+  base-path: /**
+  exclude-path: /error, /ops/**
 
 #security:
   #basic:

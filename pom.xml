@@ -76,16 +76,21 @@
 			<artifactId>spring-session</artifactId>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
-		<dependency>
+		<!--<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>2.7.0</version>
-		</dependency>
+		</dependency>-->
 		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
-		<dependency>
+	<!--	<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.7.0</version>
+		</dependency>-->
+		<dependency>
+			<groupId>com.didispace</groupId>
+			<artifactId>spring-boot-starter-swagger</artifactId>
+			<version>1.1.0.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
