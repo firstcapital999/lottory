@@ -85,7 +85,9 @@ public class LotteryServiceImpl implements ILotteryService {
         prizeDetailMap.put("prizeId", prize.get("id"));
         prizeDetailMap.put("awardStatus", "1");
         prizeDetailMap.put("createTime", new Date());
-        this.redisTemplate.opsForList().leftPush(RedisConstant.USER_AWARD_PREFIX_KEY + activityId + userRedis.getId(), prizeDetailMap);
+
+        this.redisTemplate.opsForValue().set(RedisConstant.USER_AWARD_PREFIX_KEY + activityId + userRedis.getId(), JSON.toJSONString(prizeDetailMap));
+        this.redisTemplate.opsForList().leftPush(RedisConstant.ACTIVITY_AWARD_LIST_PREFIX_KEY + activityId, prizeDetailMap);
         return ResultUtil.success(prizeDetailMap);
     }
 
@@ -314,9 +316,11 @@ public class LotteryServiceImpl implements ILotteryService {
      * @Describe 检查用户是否抽奖
      */
     private Result validUserPrizeForRedis(User user, String activityId) {
-        Object awardRecordObject = this.redisTemplate.opsForValue().get(RedisConstant.USER_AWARD_PREFIX_KEY + activityId + user.getId());
+        String awardRecordObject = (String) this.redisTemplate.opsForValue().get(RedisConstant.USER_AWARD_PREFIX_KEY + activityId + user.getId());
+
         if (awardRecordObject != null) {
-            return ResultUtil.error(ExceptionConstant.HAS_DRAW_CODE, ExceptionConstant.HAS_DRAW, awardRecordObject);
+            Map<String,Object> jsonMap = JSON.parseObject(awardRecordObject, HashMap.class);
+            return ResultUtil.error(ExceptionConstant.HAS_DRAW_CODE, ExceptionConstant.HAS_DRAW, jsonMap);
         } else {
             return ResultUtil.success();
         }

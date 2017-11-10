@@ -389,7 +389,7 @@ img {
 	padding: 0.5rem 0;
 	margin: 0 auto;
 }
-.login,.register{
+.login,.register,.closebtn{
 	display: block;
 	width: 80%;
 	height: 2.4rem;
@@ -402,6 +402,10 @@ img {
 	color: #fff;
 	font-size: 1.2rem;
 }
+
+
+
+
 /*
  * 登录
  */

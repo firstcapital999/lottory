@@ -101,7 +101,7 @@ var awardObj = {
     2: [4, 6],
     3: [2],
     4: [8],
-    5: [1, 5, 9, 11]
+    9: [1, 5, 9, 11]
 };
 
 /**
@@ -121,6 +121,12 @@ function calculateAwardPositon(awardId) {
     return awardPositon;
 }
 
+function getLocalTime(nS) {
+    return new Date(parseInt(nS)).toLocaleString().substr(0,17);
+}
+
+
+
 /**
  * 获取中奖位置
  * @param req
@@ -129,19 +135,23 @@ function getAwardPostion(req) {
     clearTimeout(_selfObj.timerIx);
     _selfObj.data = req;
     lottery.index = _selfObj.initIx;
-    lottery.prize = calculateAwardPositon(1); //每次点击的时候如果是后端传中奖位置，则进行赋值。总奖品为12个，位置：0-11
+    lottery.prize = calculateAwardPositon(req.data.prizeId); //每次点击的时候如果是后端传中奖位置，则进行赋值。总奖品为12个，位置：0-11
     //console.log(lottery.prize)
     lottery.speed = 100;
-    lottery.callback = function (req) {
+    lottery.callback = function (reqs) {
         $('#zhezhao').removeClass('hidden');
-        $('.awarad_suc').removeClass('hidden');
+        $('#'+req.data.prizeId).removeClass('hidden');
+        $('#'+req.data.prizeId).find('p.award_time').text(getLocalTime(req.data.createTime));
         autoRun(0, 12);
     };
     roll();
     _selfObj.click = true;
 }
 
-
+function closeAward(id){
+    $('#zhezhao').addClass('hidden');
+    $('#'+id).addClass('hidden');
+}
 
 /**
  * ajax
