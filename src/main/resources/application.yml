@@ -1,9 +1,5 @@
 server:
   port: 80
-  tomcat:
-    accesslog:
-      enabled: true
-    basedir: target/tomcat
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -16,8 +12,11 @@ spring:
       ddl-auto: none
     show-sql: true
   thymeleaf:
-    cache: false
-    mode: LEGACYHTML5
+      content-type: text/html
+      cache: false
+      mode: LEGACYHTML5
+      prefix: classpath:/templates
+      suffix: .html
   session:
     store-type: none
   redis:
