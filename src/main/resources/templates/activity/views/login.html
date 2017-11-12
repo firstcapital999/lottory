@@ -24,6 +24,9 @@
 		</div>
 		<div class="password">
 			<img src="/images/login_password.png"/><input class="numpassword" type="password" name="password" id="password" placeholder="请输入密码" />
+            <span class="help-block" style="color:red;"
+                  th:if="${param.error}"
+                  th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}">用户名或密码错误，请重试</span>
 		</div>
             <button type="submit" class="btn btn-primary login">登录</button>
 			<span class="resiter_btn"><a href="/register">注册</a></span>
