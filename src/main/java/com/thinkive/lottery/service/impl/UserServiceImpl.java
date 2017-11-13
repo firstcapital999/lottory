@@ -17,6 +17,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -51,6 +52,7 @@ public class UserServiceImpl implements IUserService {
      * @Descibe 用户信息保存
      */
     @Override
+    @Transactional
     public User save(User user) {
         return this.userRepository.save(user);
     }
@@ -61,6 +63,7 @@ public class UserServiceImpl implements IUserService {
      * @Describe 注册用户信息
      */
     @Override
+    @Transactional
     public Result registerUser(User user) {
         //对密码进行加密
         String password = this.passwordEncoder.encode(user.getPassword());

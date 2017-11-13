@@ -26,6 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @RunWith(SpringRunner.class)
@@ -120,4 +121,19 @@ public class LotteryApplicationTests {
         Result result = this.lotteryService.getLatestAwardList("1",0,4);
         System.out.println(result.getCode());
     }
+
+
+    @Test
+    public void testQueueLeft(){
+
+        Map<String,Object> map = (Map<String, Object>) this.redisTemplate.opsForList().leftPop(RedisConstant.ACTIVITY_AWARD_QUEUE_PREFIX_KEY+1);
+
+        if(map !=null){
+            this.redisTemplate.opsForList().rightPush(RedisConstant.ACTIVITY_AWARD_QUEUE_PREFIX_KEY+1,map);
+        }
+    }
+
+
+
+
 }
