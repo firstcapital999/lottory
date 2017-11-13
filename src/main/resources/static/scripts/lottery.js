@@ -111,7 +111,7 @@ var awardObj = {
 function calculateAwardPositon(awardId) {
     //console.log('选中框移动到的位置'+_selfObj.initIx)
     var awardPositon = 0; //默认第一个位置
-    for (var i = 0; i < awardObj[awardId].length - 1; i++) {
+    for (var i = 0; i < awardObj[awardId].length; i++) {
         //console.log(awardObj[awardId][i])
         if (awardObj[awardId][i] > _selfObj.initIx) {
             awardPositon = awardObj[awardId][i]; //将距离自动位置的最近奖品位置返回
@@ -231,6 +231,41 @@ autoRun(0, 12);
  * 初始化插件
  */
 lottery.init('lottery');
+
+
+
+// 定时局部刷新最新获奖
+function setTime() {
+    setInterval(function () {
+        Load();
+    }, 5000);
+}
+
+function Load(callback) {
+
+    $.ajax({
+        type: 'POST',
+        url: '/getLatestAwardList',
+        dataType: 'json',
+        data: {start:0,end:4},
+        success: function (data) {
+           if(data.code == 0){
+               if(data.data.length !=0){
+                   var html = '';
+
+                   for (var i = 0; i < data.data.length; i++) {
+                        html +='<li>'+data.data[i].userName+'</li><li>'+data.data[i].prizeName+'</li><li>'+getLocalTime(data.data[i].createTime)+'</li>'
+                   }
+                    $("#award_detail").html(html);
+               }
+           }
+        }
+    });
+}
+
+$(function(){
+    setTime();
+});
 
 
 

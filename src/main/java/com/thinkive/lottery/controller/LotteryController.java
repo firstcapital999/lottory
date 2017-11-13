@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Describe 抽奖控制器类
@@ -36,7 +34,7 @@ public class LotteryController {
      * @Describe 抽奖
      */
     /*@GetMapping(value = "/lottery")*/
-    @RequestMapping(value = "/lottery",method = RequestMethod.POST)
+    @RequestMapping(value = "/lottery", method = RequestMethod.POST)
     public Result lottery(@AuthenticationPrincipal UserDetails user) {
 
         //如果user为空，则未登录，不为空则已登录
@@ -51,6 +49,13 @@ public class LotteryController {
             return ResultUtil.error(ExceptionConstant.USER_NOT_LOGIN_CODE, ExceptionConstant.USER_NOT_LOGIN);
         }
 
+
+    }
+
+    @PostMapping(value = "/getLatestAwardList")
+    public Result getLatestAwardList(@RequestParam("start") long start, @RequestParam("end") long end) {
+
+        return this.lotteryService.getLatestAwardList(this.activityId, start, end);
 
     }
 }

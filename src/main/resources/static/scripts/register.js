@@ -4,10 +4,8 @@
 
 $("#register").click(function(){
     $.post("/regist",$("form").serialize(),function(data){
-        alert(data);
-        debugger;
+
         if(data.code==0){
-            debugger;
             window.location.href = "/login";
         }
 

@@ -25,4 +25,13 @@ public interface ILotteryService {
      * @Describe 抽奖
      */
     public Result lotteryDraw(String activityId);
+
+    /**
+     * @param activityId 活动Id
+     * @param start      开始偏移量，0表示表头的第一个元素
+     * @param end        结束的偏移量
+     * @return
+     * @Describe 获取最近的数据
+     */
+    public Result getLatestAwardList(String activityId, long start, long end);
 }

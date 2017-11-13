@@ -115,4 +115,9 @@ public class LotteryApplicationTests {
         System.out.print(result.getCode());
     }
 
+    @Test
+    public void testQueue(){
+        Result result = this.lotteryService.getLatestAwardList("1",0,4);
+        System.out.println(result.getCode());
+    }
 }

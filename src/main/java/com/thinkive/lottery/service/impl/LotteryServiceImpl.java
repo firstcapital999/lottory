@@ -83,10 +83,12 @@ public class LotteryServiceImpl implements ILotteryService {
         prizeDetailMap.put("activityId", activityId);
         prizeDetailMap.put("userId", userRedis.getId());
         prizeDetailMap.put("prizeId", prize.get("id"));
+        prizeDetailMap.put("userName",userRedis.getUserName());
+        prizeDetailMap.put("prizeName",prize.get("prizeName"));
         prizeDetailMap.put("awardStatus", "1");
         prizeDetailMap.put("createTime", new Date());
-
         this.redisTemplate.opsForValue().set(RedisConstant.USER_AWARD_PREFIX_KEY + activityId + userRedis.getId(), JSON.toJSONString(prizeDetailMap));
+        this.redisTemplate.opsForList().leftPush(RedisConstant.ACTIVITY_AWARD_QUEUE_PREFIX_KEY+activityId,prizeDetailMap);
         this.redisTemplate.opsForList().leftPush(RedisConstant.ACTIVITY_AWARD_LIST_PREFIX_KEY + activityId, prizeDetailMap);
         return ResultUtil.success(prizeDetailMap);
     }
@@ -148,6 +150,21 @@ public class LotteryServiceImpl implements ILotteryService {
         }
 
         return ResultUtil.success(selectAward);
+    }
+
+    /**
+     * @param activityId 活动Id
+     * @param start    开始偏移量，0表示表头的第一个元素
+     * @param end      结束的偏移量
+     * @return
+     * @Describe 获取最近的数据
+     */
+    @Override
+    public Result getLatestAwardList(String activityId, long start, long end) {
+
+
+        List<Map<String,Object>> list =  this.redisTemplate.opsForList().range(RedisConstant.ACTIVITY_AWARD_LIST_PREFIX_KEY+activityId,start,end);
+        return ResultUtil.success(list);
     }
 
 

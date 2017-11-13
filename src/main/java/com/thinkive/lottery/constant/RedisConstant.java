@@ -24,5 +24,8 @@ public class RedisConstant {
     //活动中奖信息key前缀
     public static final String ACTIVITY_AWARD_LIST_PREFIX_KEY = "activityAwardList@";
 
+    //活动奖品信息队列
+    public static final String ACTIVITY_AWARD_QUEUE_PREFIX_KEY = "activityAwardQueue@";
+
 
 }
