@@ -49,6 +49,12 @@ public class LotteryController {
         return result;
     }
 
+    /**
+     * 获取redis中的奖品信息
+     * @param start 开始位置
+     * @param end 结束位置
+     * @return
+     */
     @PostMapping(value = "/getLatestAwardList")
     public Result getLatestAwardList(@RequestParam("start") long start, @RequestParam("end") long end) {
 
