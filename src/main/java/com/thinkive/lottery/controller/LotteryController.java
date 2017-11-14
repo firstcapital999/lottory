@@ -1,15 +1,16 @@
 package com.thinkive.lottery.controller;
 
-import com.thinkive.common.constant.ExceptionConstant;
 import com.thinkive.common.entity.Result;
-import com.thinkive.common.util.ResultUtil;
 import com.thinkive.lottery.service.ILotteryService;
+import com.thinkive.lottery.util.LotteryCallable;
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.Callable;
 
 /**
  * @Describe 抽奖控制器类
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @Api("抽奖相关API")
 public class LotteryController {
 
+    private final static Logger logger = LoggerFactory.getLogger(LotteryController.class);
+
     //活动ID
     @Value("${activity.id}")
     private String activityId;
@@ -28,28 +31,22 @@ public class LotteryController {
     @Autowired
     private ILotteryService lotteryService;
 
+    @Autowired
+    private LotteryCallable lotteryCallable;
+
     /**
-     * @param user 验证用户是否登录
+     *
      * @return
      * @Describe 抽奖
      */
     /*@GetMapping(value = "/lottery")*/
     @RequestMapping(value = "/lottery", method = RequestMethod.POST)
-    public Result lottery(@AuthenticationPrincipal UserDetails user) {
+    public Callable<Result> lottery() {
 
-        //如果user为空，则未登录，不为空则已登录
-
-        if (user != null) {
-
-            //执行抽奖程序，返回抽奖的结果集
-            return this.lotteryService.lotteryMain(user.getUsername(), this.activityId);
-
-        } else {
-            //返回未登录的错误提示
-            return ResultUtil.error(ExceptionConstant.USER_NOT_LOGIN_CODE, ExceptionConstant.USER_NOT_LOGIN);
-        }
-
-
+        logger.info("主线程启动");
+        Callable<Result> result = this.lotteryCallable;
+        logger.info("主线程结束");
+        return result;
     }
 
     @PostMapping(value = "/getLatestAwardList")
