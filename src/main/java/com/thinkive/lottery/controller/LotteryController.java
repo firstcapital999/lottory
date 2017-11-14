@@ -31,6 +31,7 @@ public class LotteryController {
     @Autowired
     private ILotteryService lotteryService;
 
+    //抽奖线程
     @Autowired
     private LotteryCallable lotteryCallable;
 
