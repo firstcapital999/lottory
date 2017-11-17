@@ -75,23 +75,63 @@ public class LotteryServiceImpl implements ILotteryService {
 
         Result lotteryResult = this.lotteryDraw(activityId);
         if (ExceptionConstant.SUCCESS_CODE != lotteryResult.getCode()) {
-            return lotteryResult;
+            if (ExceptionConstant.NO_PRIZE_CODE == lotteryResult.getCode()) {
+                //插入默认的奖品
+                return this.DefaultPrize(userRedis, activityId);
+
+            } else {
+                return lotteryResult;
+            }
         }
         Map<String, Object> prize = (Map<String, Object>) lotteryResult.getData();
         //插入中奖记录
+        return this.insertLotteryPrize(userRedis, activityId, prize);
+    }
+
+    /**
+     * @param user       用户信息
+     * @param activityId 活动id
+     * @param prize      奖品
+     * @return
+     * @Describe 插入奖品
+     */
+    public Result insertLotteryPrize(User user, String activityId, Map<String, Object> prize) {
         Map<String, Object> prizeDetailMap = new HashMap<String, Object>();
         prizeDetailMap.put("activityId", activityId);
-        prizeDetailMap.put("userId", userRedis.getId());
+        prizeDetailMap.put("userId", user.getId());
         prizeDetailMap.put("prizeId", prize.get("id"));
-        prizeDetailMap.put("userName",userRedis.getUserName());
-        prizeDetailMap.put("prizeName",prize.get("prizeName"));
+        prizeDetailMap.put("userName", user.getUserName());
+        prizeDetailMap.put("prizeName", prize.get("prizeName"));
         prizeDetailMap.put("awardStatus", "1");
         prizeDetailMap.put("createTime", new Date());
-        this.redisTemplate.opsForValue().set(RedisConstant.USER_AWARD_PREFIX_KEY + activityId + userRedis.getId(), JSON.toJSONString(prizeDetailMap));
-        this.redisTemplate.opsForList().leftPush(RedisConstant.ACTIVITY_AWARD_QUEUE_PREFIX_KEY+activityId,prizeDetailMap);
+        this.redisTemplate.opsForValue().set(RedisConstant.USER_AWARD_PREFIX_KEY + activityId + user.getId(), JSON.toJSONString(prizeDetailMap));
+        this.redisTemplate.opsForList().leftPush(RedisConstant.ACTIVITY_AWARD_QUEUE_PREFIX_KEY + activityId, prizeDetailMap);
         this.redisTemplate.opsForList().leftPush(RedisConstant.ACTIVITY_AWARD_LIST_PREFIX_KEY + activityId, prizeDetailMap);
         return ResultUtil.success(prizeDetailMap);
     }
+
+
+    /**
+     * @param user
+     * @param activityId
+     * @return
+     * @Describe 插入默认奖品
+     */
+    public Result DefaultPrize(User user, String activityId) {
+        Map<String, Object> prizeDetailMap = new HashMap<String, Object>();
+        prizeDetailMap.put("activityId", activityId);
+        prizeDetailMap.put("userId", user.getId());
+        prizeDetailMap.put("prizeId", 9);
+        prizeDetailMap.put("userName", user.getUserName());
+        prizeDetailMap.put("prizeName", "会员体验");
+        prizeDetailMap.put("awardStatus", "1");
+        prizeDetailMap.put("createTime", new Date());
+        this.redisTemplate.opsForValue().set(RedisConstant.USER_AWARD_PREFIX_KEY + activityId + user.getId(), JSON.toJSONString(prizeDetailMap));
+        this.redisTemplate.opsForList().leftPush(RedisConstant.ACTIVITY_AWARD_QUEUE_PREFIX_KEY + activityId, prizeDetailMap);
+        this.redisTemplate.opsForList().leftPush(RedisConstant.ACTIVITY_AWARD_LIST_PREFIX_KEY + activityId, prizeDetailMap);
+        return ResultUtil.success(prizeDetailMap);
+    }
+
 
     /**
      * @param activityId
@@ -154,8 +194,8 @@ public class LotteryServiceImpl implements ILotteryService {
 
     /**
      * @param activityId 活动Id
-     * @param start    开始偏移量，0表示表头的第一个元素
-     * @param end      结束的偏移量
+     * @param start      开始偏移量，0表示表头的第一个元素
+     * @param end        结束的偏移量
      * @return
      * @Describe 获取最近的数据
      */
@@ -163,7 +203,7 @@ public class LotteryServiceImpl implements ILotteryService {
     public Result getLatestAwardList(String activityId, long start, long end) {
 
 
-        List<Map<String,Object>> list =  this.redisTemplate.opsForList().range(RedisConstant.ACTIVITY_AWARD_LIST_PREFIX_KEY+activityId,start,end);
+        List<Map<String, Object>> list = this.redisTemplate.opsForList().range(RedisConstant.ACTIVITY_AWARD_LIST_PREFIX_KEY + activityId, start, end);
         return ResultUtil.success(list);
     }
 
@@ -336,7 +376,7 @@ public class LotteryServiceImpl implements ILotteryService {
         String awardRecordObject = (String) this.redisTemplate.opsForValue().get(RedisConstant.USER_AWARD_PREFIX_KEY + activityId + user.getId());
 
         if (awardRecordObject != null) {
-            Map<String,Object> jsonMap = JSON.parseObject(awardRecordObject, HashMap.class);
+            Map<String, Object> jsonMap = JSON.parseObject(awardRecordObject, HashMap.class);
             return ResultUtil.error(ExceptionConstant.HAS_DRAW_CODE, ExceptionConstant.HAS_DRAW, jsonMap);
         } else {
             return ResultUtil.success();
