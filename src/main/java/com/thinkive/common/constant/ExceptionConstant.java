@@ -64,6 +64,10 @@ public class ExceptionConstant {
 
     public static final String NO_PRIZE = "没有奖品可抽";
 
+    public static final Integer USER_EXIST_CODE=13;
+
+    public static final String USER_EXIST = "用户名已存在";
+
 
 
 }

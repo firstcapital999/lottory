@@ -65,18 +65,42 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional
     public Result registerUser(User user) {
-        //对密码进行加密
-        String password = this.passwordEncoder.encode(user.getPassword());
-        //将user的明文密码替换成加密后的密码
-        user.setPassword(password);
-        //初始化默认注册参数
-        user = this.initDefaultRegisterParams(user);
-        //保存用户信息
-        user = this.userRepository.save(user);
-        //将注册的用户数据存放到redis
-        this.saveUserToRedis(user);
-        return ResultUtil.success();
+        //验证用户名是否存在
+        Boolean flag = this.checkUserExistByUserName(user.getUserName());
+
+        if (flag) {
+            //对密码进行加密
+            String password = this.passwordEncoder.encode(user.getPassword());
+            //将user的明文密码替换成加密后的密码
+            user.setPassword(password);
+            //初始化默认注册参数
+            user = this.initDefaultRegisterParams(user);
+            //保存用户信息
+            user = this.userRepository.save(user);
+            //将注册的用户数据存放到redis
+            this.saveUserToRedis(user);
+            return ResultUtil.success();
+        } else {
+            return ResultUtil.error(ExceptionConstant.USER_EXIST_CODE, ExceptionConstant.USER_EXIST);
+        }
     }
+
+    /**
+     * @param userName 用户名
+     * @return
+     * @Describe 通过用户名检查用户是否存在
+     */
+    public Boolean checkUserExistByUserName(String userName) {
+
+        User user = this.userRepository.findByUserName(userName);
+        if (user != null) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
 
     /**
      * @param userName 用户名
