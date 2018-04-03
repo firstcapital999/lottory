@@ -2,6 +2,10 @@ package com.thinkive.common.authority.handler;
 
 
 import com.thinkive.common.authority.entity.User;
+import com.thinkive.common.util.UUIDUtil;
+import com.thinkive.lottery.constant.RedisConstant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -15,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @Describe 登录成功后的处理类
@@ -27,6 +32,10 @@ public class LotteryAuthenticationSuccessHandler extends
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     private RequestCache requestCache = new HttpSessionRequestCache();
+
+    //redis模板类
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 
     /**
@@ -50,6 +59,9 @@ public class LotteryAuthenticationSuccessHandler extends
         System.out.println("IP :" + getIpAddress(request));
 
         SavedRequest savedRequest = requestCache.getRequest(request, response);
+
+ /*       String token = UUIDUtil.uuid();
+        redisTemplate.opsForValue().set(RedisConstant.USER_SESSION_PREFIX_KEY+token,userDetails);*/
 
 
         redirectStrategy.sendRedirect(request, response, "/home");

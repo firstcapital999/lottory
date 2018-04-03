@@ -27,5 +27,8 @@ public class RedisConstant {
     //活动奖品信息队列
     public static final String ACTIVITY_AWARD_QUEUE_PREFIX_KEY = "activityAwardQueue@";
 
+    //用户session前缀
+    public static final String USER_SESSION_PREFIX_KEY = "userSession@";
+
 
 }
