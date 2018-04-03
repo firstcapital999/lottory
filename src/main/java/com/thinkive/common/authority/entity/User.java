@@ -1,6 +1,9 @@
 package com.thinkive.common.authority.entity;
 
+import com.thinkive.common.validator.IsMobile;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -20,9 +23,12 @@ public class User implements Serializable {
     private Long id;
 
     //用户名
+    @NotNull
+    @IsMobile
     private String userName;
 
     //密码
+    @NotNull
     private String password;
 
     //昵称
