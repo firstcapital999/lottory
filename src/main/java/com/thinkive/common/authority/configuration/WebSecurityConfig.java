@@ -1,5 +1,6 @@
 package com.thinkive.common.authority.configuration;
 
+import com.thinkive.common.authority.filter.ValidateCodeFilter;
 import com.thinkive.common.authority.handler.LotteryAuthenticationSuccessHandler;
 import com.thinkive.common.authority.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 /**
@@ -25,13 +28,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private LotteryAuthenticationSuccessHandler lotteryAuthenticationSuccessHandler;
 
+    @Autowired
+    private AuthenticationFailureHandler lottoryAuthenticationFailureHandler;
+
+
     //http://localhost:8080/login 输入正确的用户名密码 并且选中remember-me 则登陆成功，转到 index页面
     //再次访问index页面无需登录直接访问
     //访问http://localhost:8080/home 不拦截，直接访问，
     //访问http://localhost:8080/hello 需要登录验证后，且具备 “ADMIN”权限hasAuthority("ADMIN")才可以访问
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+
+        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+        validateCodeFilter.setAuthenticationFailureHandler(lottoryAuthenticationFailureHandler);
+
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/", "/home",
                         "/register",
@@ -42,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/css/**",
                         "/scripts/**",
                         "/**/*.html",
-                        "/webjars/**","/js/**",
+                        "/webjars/**", "/js/**",
                         "/checkUser/*",
                         "/getLatestAwardList/**",
                         "/code/image").permitAll()//访问：/home 无需登录认证权限
@@ -56,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(lotteryAuthenticationSuccessHandler) //登录成功后可使用loginSuccessHandler()存储用户信息，可选。
                 .and()
                 .logout()
-               /* .logoutSuccessUrl("/home") //退出登录后的默认网址是”/home”*/
+                /* .logoutSuccessUrl("/home") //退出登录后的默认网址是”/home”*/
                 .permitAll()
                 .invalidateHttpSession(true)
                 .and()
@@ -65,11 +76,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();//跨站防护关闭
     }
 
-   /* @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//指定密码加密所使用的加密器为passwordEncoder()
-//需要将密码加密后写入数据库
-        *//*auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+    /* @Autowired
+     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+ //指定密码加密所使用的加密器为passwordEncoder()
+ //需要将密码加密后写入数据库
+         *//*auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
         auth.eraseCredentials(false);*//*
         auth
                 .inMemoryAuthentication()

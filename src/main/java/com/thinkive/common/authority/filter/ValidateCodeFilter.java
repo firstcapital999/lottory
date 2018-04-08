@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -24,6 +25,7 @@ import java.io.IOException;
  * @Author dengchangneng
  * @Create 2018-04-03-15:29
  **/
+
 public class ValidateCodeFilter extends OncePerRequestFilter {
 
 

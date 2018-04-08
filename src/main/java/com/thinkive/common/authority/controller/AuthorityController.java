@@ -1,5 +1,6 @@
 package com.thinkive.common.authority.controller;
 
+import com.thinkive.common.authority.support.SimpleResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -23,6 +24,7 @@ import java.io.IOException;
 @RestController
 public class AuthorityController {
 
+
     //获取请求缓存
     private RequestCache requestCache = new HttpSessionRequestCache();
 
@@ -39,17 +41,17 @@ public class AuthorityController {
      */
     @RequestMapping(value = "/authentication/require")
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    public String requireAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public SimpleResponse requireAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
         if (savedRequest != null) {
             String targetUrl = savedRequest.getRedirectUrl();
             System.out.println("引发跳转的请求是：" + targetUrl);
             if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
-                redirectStrategy.sendRedirect(request, response, "/login.html");
+                redirectStrategy.sendRedirect(request, response, "/activity/views/login.html");
             } else {
 
             }
         }
-        return null;
+        return new SimpleResponse("访问的服务需要身份验证");
     }
 }
