@@ -20,8 +20,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired  //业务服务类
     private UserRepository userRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {

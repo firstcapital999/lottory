@@ -41,7 +41,9 @@ public class LottoryAuthenctiationFailureHandler extends SimpleUrlAuthentication
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
 
-        super.onAuthenticationFailure(request, response, exception);
+        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(objectMapper.writeValueAsString(new SimpleResponse(exception.getMessage())));
 
 
     }
