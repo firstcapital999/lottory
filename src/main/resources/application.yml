@@ -1,5 +1,5 @@
 server:
-  port: 8089
+  port: 80
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -32,7 +32,7 @@ spring:
 activity:
   id: 1
   beginDate: 2017-09-01 00:00:00
-  endDate: 2017-11-31 23:59:59
+  endDate: 2117-11-31 23:59:59
 swagger:
   base-package: com.thinkive
   title: 抽奖
