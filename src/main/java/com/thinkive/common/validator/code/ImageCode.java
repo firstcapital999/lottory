@@ -1,6 +1,7 @@
 package com.thinkive.common.validator.code;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
  * @Author dengchangneng
  * @Create 2018-04-03-13:59
  **/
-public class ImageCode {
+public class ImageCode implements Serializable{
 
     private BufferedImage image;
 
@@ -51,6 +52,11 @@ public class ImageCode {
         this.image = image;
         this.code = code;
         this.expireTime = LocalDateTime.now().plusSeconds(expireIn);
+    }
+
+    public ImageCode(String code, LocalDateTime expireIn) {
+        this.code = code;
+        this.expireTime = expireIn;
     }
 
     public ImageCode() {

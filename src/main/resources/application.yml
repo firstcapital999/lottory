@@ -1,5 +1,7 @@
 server:
-  port: 80
+  port: 8089
+#  session:
+#    timeout: 60
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -18,7 +20,7 @@ spring:
       prefix: classpath:/templates
       suffix: .html
   session:
-    store-type: none
+    store-type: redis
   redis:
     database: 0
     host: 120.77.200.240

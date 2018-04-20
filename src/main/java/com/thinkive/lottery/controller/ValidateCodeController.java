@@ -30,7 +30,8 @@ public class ValidateCodeController {
     @GetMapping("/code/image")
     public void createCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ImageCode imageCode = generate(new ServletWebRequest(request));
-        sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, imageCode);
+        ImageCode imgCode = new ImageCode(imageCode.getCode(),imageCode.getExpireTime());
+        sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, imgCode);
         ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
     }
 
