@@ -1,9 +1,6 @@
 package com.thinkive.common.authority.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -16,7 +13,7 @@ public class ResourceRole {
 
     //主键ID
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     //角色ID

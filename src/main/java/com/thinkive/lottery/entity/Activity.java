@@ -13,7 +13,7 @@ import java.util.Set;
 public class Activity {
     //主键ID
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     //活动编码

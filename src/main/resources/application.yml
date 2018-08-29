@@ -9,7 +9,6 @@ spring:
     username: root
     password: root
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
       ddl-auto: none
     show-sql: true
@@ -19,18 +18,13 @@ spring:
       mode: LEGACYHTML5
       prefix: classpath:/templates
       suffix: .html
+  redis:
+     cluster:
+       max-redirects: 6
+       nodes: 120.77.200.240:7001,120.77.200.240:7002,120.77.200.240:7003,120.77.200.240:7004,120.77.200.240:7005,120.77.200.240:7006
+     database: 0
   session:
     store-type: redis
-  redis:
-    database: 0
-    host: 120.77.200.240
-    port: 6399
-    pool:
-      max-active: 8
-      min-idle: 0
-      max-wait: -1
-    password: Th1nkdcn
-    timeout: 0
 activity:
   id: 1
   beginDate: 2017-09-01 00:00:00

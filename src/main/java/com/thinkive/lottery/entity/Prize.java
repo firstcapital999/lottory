@@ -12,7 +12,7 @@ public class Prize {
 
     //主键ID
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     //活动

@@ -13,7 +13,7 @@ public class Role implements Serializable {
 
     //主键ID
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     //用户

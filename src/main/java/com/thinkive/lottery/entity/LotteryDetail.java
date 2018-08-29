@@ -1,9 +1,6 @@
 package com.thinkive.lottery.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,7 +15,7 @@ public class LotteryDetail implements Serializable {
      * 主键
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     /**
