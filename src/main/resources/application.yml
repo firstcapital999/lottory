@@ -1,5 +1,5 @@
 server:
-  port: 8089
+  port: 80
 #  session:
 #    timeout: 60
 spring:
@@ -23,6 +23,8 @@ spring:
        max-redirects: 6
        nodes: 120.77.200.240:7001,120.77.200.240:7002,120.77.200.240:7003,120.77.200.240:7004,120.77.200.240:7005,120.77.200.240:7006
      database: 0
+     password: tdwdcn1991
+     timeout: 60000
   session:
     store-type: redis
 activity:
