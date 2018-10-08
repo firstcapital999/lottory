@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.thinkive.common.authority.entity.User;
 import com.thinkive.common.constant.ExceptionConstant;
 import com.thinkive.common.entity.Result;
+import com.thinkive.common.redis.configuration.RedisLock;
 import com.thinkive.common.util.ResultUtil;
 import com.thinkive.lottery.constant.RedisConstant;
 import com.thinkive.lottery.service.ILotteryService;
@@ -36,6 +37,9 @@ public class LotteryServiceImpl implements ILotteryService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private RedisLock redisLock;
+
     //用户服务类
     @Autowired
     private IUserService userService;
@@ -58,34 +62,47 @@ public class LotteryServiceImpl implements ILotteryService {
     @Override
     public Result lotteryMain(String userName, String activityId) {
         //获取用户信息
-        Result<User> userResult = this.userService.getUserForRedis(userName);
-        if (ExceptionConstant.SUCCESS_CODE != userResult.getCode()) {
-            return userResult;
-        }
-        //获取用户信息
-        User userRedis = userResult.getData();
-
-        //判断用户是否有抽奖的资格
-        Result lotterAuthResult = this.validLotteryAuth(userRedis, activityId);
-        if (ExceptionConstant.SUCCESS_CODE != lotterAuthResult.getCode()) {
-            return lotterAuthResult;
-        }
-
-        //执行抽奖操作
-
-        Result lotteryResult = this.lotteryDraw(activityId);
-        if (ExceptionConstant.SUCCESS_CODE != lotteryResult.getCode()) {
-            if (ExceptionConstant.NO_PRIZE_CODE == lotteryResult.getCode()) {
-                //插入默认的奖品
-                return this.DefaultPrize(userRedis, activityId);
-
-            } else {
-                return lotteryResult;
+        try {
+            Result<User> userResult = this.userService.getUserForRedis(userName);
+            if (ExceptionConstant.SUCCESS_CODE != userResult.getCode()) {
+                return userResult;
             }
+            //获取用户信息
+            User userRedis = userResult.getData();
+            Map<String, Object> prize = new HashMap<>();
+
+            Result result = null;
+
+            if (redisLock.lock()) {
+                //判断用户是否有抽奖的资格
+                Result lotterAuthResult = this.validLotteryAuth(userRedis, activityId);
+                if (ExceptionConstant.SUCCESS_CODE != lotterAuthResult.getCode()) {
+                    return lotterAuthResult;
+                }
+
+                //执行抽奖操作
+
+                Result lotteryResult = this.lotteryDraw(activityId);
+                if (ExceptionConstant.SUCCESS_CODE != lotteryResult.getCode()) {
+                    if (ExceptionConstant.NO_PRIZE_CODE == lotteryResult.getCode()) {
+                        //插入默认的奖品
+                        return this.DefaultPrize(userRedis, activityId);
+
+                    } else {
+                        return lotteryResult;
+                    }
+                }
+                prize = (Map<String, Object>) lotteryResult.getData();
+                //插入中奖记录
+                result = this.insertLotteryPrize(userRedis, activityId, prize);
+            }
+            return result;
+        } catch (Exception e) {
+            logger.error("抽奖异常{}", e);
+            return ResultUtil.error(ExceptionConstant.ERROR_CODE, ExceptionConstant.ERROR);
+        } finally {
+            redisLock.unlock();
         }
-        Map<String, Object> prize = (Map<String, Object>) lotteryResult.getData();
-        //插入中奖记录
-        return this.insertLotteryPrize(userRedis, activityId, prize);
     }
 
     /**
@@ -141,7 +158,7 @@ public class LotteryServiceImpl implements ILotteryService {
      */
     @Override
     public Result lotteryDraw(String activityId) {
-         /* 奖品概率集 */
+        /* 奖品概率集 */
         List<Double> prob = new ArrayList<Double>();
         /* 奖品结果集 */
         List<Map<String, Object>> selectAwardList = new ArrayList<Map<String, Object>>();
@@ -171,7 +188,7 @@ public class LotteryServiceImpl implements ILotteryService {
         /* 实例化抽奖算法,并抽奖 */
         AliasMethod aliasMethod = new AliasMethod(prob);
 
-            /* 开始抽奖 */
+        /* 开始抽奖 */
         int index = aliasMethod.next();
 
         // 返回抽中奖品
@@ -216,7 +233,7 @@ public class LotteryServiceImpl implements ILotteryService {
     private Result<List<Double>> generatorAwardProbability(List<Map<String, Object>> selectAwardList) {
         List<Double> prob = new ArrayList<Double>();
         try {
-                /* 遍历所有奖品,取得奖品概率生成随机算法计算规则 */
+            /* 遍历所有奖品,取得奖品概率生成随机算法计算规则 */
             for (Map<String, Object> ps : selectAwardList) {
                 double rate = ((BigDecimal) ps.get("prizeRate")).doubleValue();
                 double tmp = rate / 100;
@@ -264,7 +281,7 @@ public class LotteryServiceImpl implements ILotteryService {
         Map<String, Object> result = new HashMap<String, Object>();
 
 
-         /* 中奖率累计 */
+        /* 中奖率累计 */
         double probabilityTotal = 0.0;
 
         /* 奖品结果集 */
