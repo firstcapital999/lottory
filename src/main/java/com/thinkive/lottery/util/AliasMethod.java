@@ -34,10 +34,12 @@ public class AliasMethod {
 
     public AliasMethod(List<Double> prob, Random rand) {
         /* Begin by doing basic structural checks on the inputs. */
-        if (prob == null || rand == null)
+        if (prob == null || rand == null) {
             throw new NullPointerException();
-        if (prob.size() == 0)
+        }
+        if (prob.size() == 0) {
             throw new IllegalArgumentException("Probability vector must be nonempty.");
+        }
 
         this.rand = rand;
         this.length = prob.size();
@@ -51,10 +53,12 @@ public class AliasMethod {
         /* divide elements into 2 groups by probability */
         for (int i = 0; i < length; i++) {
             probtemp[i] = prob.get(i) * length; /* initial probtemp */
-            if (probtemp[i] < 1.0)
+            if (probtemp[i] < 1.0) {
                 small.add(i);
-            else
+            }
+            else {
                 large.add(i);
+            }
         }
 
         while (!small.isEmpty() && !large.isEmpty()) {
@@ -63,20 +67,24 @@ public class AliasMethod {
             probability[less] = probtemp[less];
             alias[less] = more;
             probtemp[more] = probtemp[more] - (1.0 - probability[less]);
-            if (probtemp[more] < 1.0)
+            if (probtemp[more] < 1.0) {
                 small.add(more);
-            else
+            }
+            else {
                 large.add(more);
+            }
         }
         /*
          * At this point, everything is in one list, which means that the
          * remaining probabilities should all be 1/n. Based on this, set them
          * appropriately.
          */
-        while (!small.isEmpty())
+        while (!small.isEmpty()) {
             probability[small.pop()] = 1.0;
-        while (!large.isEmpty())
+        }
+        while (!large.isEmpty()) {
             probability[large.pop()] = 1.0;
+        }
     }
 
     /**

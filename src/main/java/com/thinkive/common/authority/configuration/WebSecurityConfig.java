@@ -2,14 +2,13 @@ package com.thinkive.common.authority.configuration;
 
 import com.thinkive.common.authority.filter.ValidateCodeFilter;
 import com.thinkive.common.authority.handler.LotteryAuthenticationSuccessHandler;
-import com.thinkive.common.authority.service.CustomUserDetailsService;
+import com.thinkive.common.authority.service.CustomUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.token.KeyBasedPersistenceTokenService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -30,7 +29,7 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private CustomUserDetailsServiceImpl customUserDetailsServiceImpl;
 
     @Autowired
     private LotteryAuthenticationSuccessHandler lotteryAuthenticationSuccessHandler;

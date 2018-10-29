@@ -24,7 +24,7 @@ import java.util.Set;
 
 /**
  * @Describe 用户相关服务类
- * @auther dengchangneng
+ * @author dengchangneng
  * @create 2017年11月1日13:25:22
  */
 @Service
@@ -152,7 +152,7 @@ public class UserServiceImpl implements IUserService {
     }
 
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         User user = new User();
         user.setPassword("12323");
         //默认注册设置账号可用

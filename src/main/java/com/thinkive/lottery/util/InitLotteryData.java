@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.thinkive.lottery.constant.RedisConstant;
 import com.thinkive.lottery.entity.Prize;
 import com.thinkive.lottery.filter.FastJSONFilter;
+import com.thinkive.lottery.queue.AsyncService;
 import com.thinkive.lottery.queue.AwardQueueCustomer;
 import com.thinkive.lottery.service.IPrizeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class InitLotteryData implements CommandLineRunner {
     private FastJSONFilter fastJSONFilter;
 
     @Autowired
-    private AwardQueueCustomer awardQueueCustomer;
+    private AsyncService asyncService;
 
     /**
      * @param strings
@@ -65,9 +66,7 @@ public class InitLotteryData implements CommandLineRunner {
 
             }
         }
-
-        Thread thread = new Thread(awardQueueCustomer);
-        thread.start();
+        asyncService.executeAsync();
         System.out.println("数据加载完成");
     }
 

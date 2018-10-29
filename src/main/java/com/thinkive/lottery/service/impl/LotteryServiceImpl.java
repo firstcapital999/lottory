@@ -64,7 +64,7 @@ public class LotteryServiceImpl implements ILotteryService {
         //获取用户信息
         try {
             Result<User> userResult = this.userService.getUserForRedis(userName);
-            if (ExceptionConstant.SUCCESS_CODE != userResult.getCode()) {
+            if (!ExceptionConstant.SUCCESS_CODE.equals(userResult.getCode())) {
                 return userResult;
             }
             //获取用户信息
@@ -76,17 +76,17 @@ public class LotteryServiceImpl implements ILotteryService {
             if (redisLock.lock()) {
                 //判断用户是否有抽奖的资格
                 Result lotterAuthResult = this.validLotteryAuth(userRedis, activityId);
-                if (ExceptionConstant.SUCCESS_CODE != lotterAuthResult.getCode()) {
+                if (!ExceptionConstant.SUCCESS_CODE.equals(lotterAuthResult.getCode())) {
                     return lotterAuthResult;
                 }
 
                 //执行抽奖操作
 
                 Result lotteryResult = this.lotteryDraw(activityId);
-                if (ExceptionConstant.SUCCESS_CODE != lotteryResult.getCode()) {
-                    if (ExceptionConstant.NO_PRIZE_CODE == lotteryResult.getCode()) {
+                if (!ExceptionConstant.SUCCESS_CODE.equals(lotteryResult.getCode())) {
+                    if (ExceptionConstant.NO_PRIZE_CODE.equals(lotteryResult.getCode())) {
                         //插入默认的奖品
-                        return this.DefaultPrize(userRedis, activityId);
+                        return this.defaultPrize(userRedis, activityId);
 
                     } else {
                         return lotteryResult;
@@ -134,7 +134,7 @@ public class LotteryServiceImpl implements ILotteryService {
      * @return
      * @Describe 插入默认奖品
      */
-    public Result DefaultPrize(User user, String activityId) {
+    public Result defaultPrize(User user, String activityId) {
         Map<String, Object> prizeDetailMap = new HashMap<String, Object>();
         prizeDetailMap.put("activityId", activityId);
         prizeDetailMap.put("userId", user.getId());
@@ -164,7 +164,7 @@ public class LotteryServiceImpl implements ILotteryService {
         List<Map<String, Object>> selectAwardList = new ArrayList<Map<String, Object>>();
         //获取活动奖品列表
         Result<Map<String, Object>> activityAwardList = this.getActivityAwardList(activityId);
-        if (ExceptionConstant.SUCCESS_CODE != activityAwardList.getCode()) {
+        if (!ExceptionConstant.SUCCESS_CODE.equals(activityAwardList.getCode())) {
             return activityAwardList;
         }
         Map<String, Object> awardList = activityAwardList.getData();
@@ -180,7 +180,7 @@ public class LotteryServiceImpl implements ILotteryService {
         }
         //生成抽奖用的概率集合
         Result<List<Double>> probabilityResult = this.generatorAwardProbability(selectAwardList);
-        if (ExceptionConstant.SUCCESS_CODE != probabilityResult.getCode()) {
+        if (!ExceptionConstant.SUCCESS_CODE.equals(probabilityResult.getCode())) {
             return probabilityResult;
         }
         prob = probabilityResult.getData();
@@ -340,11 +340,11 @@ public class LotteryServiceImpl implements ILotteryService {
     private Result validLotteryAuth(User user, String activityId) {
         //第一步校验用户是否活动期间内注册用户
         Result activityAuthResult = this.validUserRegisterTime(user);
-        if (ExceptionConstant.SUCCESS_CODE != activityAuthResult.getCode()) {
+        if (!ExceptionConstant.SUCCESS_CODE.equals(activityAuthResult.getCode())) {
             return activityAuthResult;
         }
         Result userPrizeResult = this.validUserPrizeForRedis(user, activityId);
-        if (ExceptionConstant.SUCCESS_CODE != userPrizeResult.getCode()) {
+        if (!ExceptionConstant.SUCCESS_CODE.equals(userPrizeResult.getCode())) {
             return userPrizeResult;
         }
         return ResultUtil.success();
