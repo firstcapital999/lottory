@@ -25,7 +25,7 @@ import java.io.IOException;
 @Component("imoocAuthenctiationFailureHandler")
 public class LottoryAuthenctiationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    //private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ObjectMapper objectMapper;

@@ -51,7 +51,7 @@ public class LotteryDetail implements Serializable {
         this.userId = userId;
         this.activityId = activityId;
         this.prizeId = prizeId;
-        this.createTime = createTime;
+        this.createTime = (Date) createTime.clone();
         this.awardStatus = awardStatus;
     }
 
@@ -88,11 +88,13 @@ public class LotteryDetail implements Serializable {
     }
 
     public Date getCreateTime() {
-        return createTime;
+        Date temp = createTime;
+        return temp;
     }
 
     public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+        Date temp = createTime;
+        this.createTime = (Date) temp.clone();
     }
 
     public String getAwardStatus() {

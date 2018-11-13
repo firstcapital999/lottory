@@ -69,7 +69,6 @@ public class LotteryServiceImpl implements ILotteryService {
             }
             //获取用户信息
             User userRedis = userResult.getData();
-            Map<String, Object> prize = new HashMap<>();
 
             Result result = null;
 
@@ -92,7 +91,7 @@ public class LotteryServiceImpl implements ILotteryService {
                         return lotteryResult;
                     }
                 }
-                prize = (Map<String, Object>) lotteryResult.getData();
+                Map<String, Object> prize = (Map<String, Object>) lotteryResult.getData();
                 //插入中奖记录
                 result = this.insertLotteryPrize(userRedis, activityId, prize);
             }
@@ -117,7 +116,7 @@ public class LotteryServiceImpl implements ILotteryService {
         prizeDetailMap.put("activityId", activityId);
         prizeDetailMap.put("userId", user.getId());
         prizeDetailMap.put("prizeId", prize.get("id"));
-        prizeDetailMap.put("userName", user.getUserName());
+        prizeDetailMap.put("userName", user.getUsername());
         prizeDetailMap.put("prizeName", prize.get("prizeName"));
         prizeDetailMap.put("awardStatus", "1");
         prizeDetailMap.put("createTime", new Date());
@@ -139,7 +138,7 @@ public class LotteryServiceImpl implements ILotteryService {
         prizeDetailMap.put("activityId", activityId);
         prizeDetailMap.put("userId", user.getId());
         prizeDetailMap.put("prizeId", 9);
-        prizeDetailMap.put("userName", user.getUserName());
+        prizeDetailMap.put("userName", user.getUsername());
         prizeDetailMap.put("prizeName", "会员体验");
         prizeDetailMap.put("awardStatus", "1");
         prizeDetailMap.put("createTime", new Date());
@@ -159,9 +158,9 @@ public class LotteryServiceImpl implements ILotteryService {
     @Override
     public Result lotteryDraw(String activityId) {
         /* 奖品概率集 */
-        List<Double> prob = new ArrayList<Double>();
+        List<Double> prob;
         /* 奖品结果集 */
-        List<Map<String, Object>> selectAwardList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> selectAwardList;
         //获取活动奖品列表
         Result<Map<String, Object>> activityAwardList = this.getActivityAwardList(activityId);
         if (!ExceptionConstant.SUCCESS_CODE.equals(activityAwardList.getCode())) {

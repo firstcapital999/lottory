@@ -25,7 +25,7 @@ public class User implements Serializable {
     //用户名
     @NotNull
     @IsMobile
-    private String userName;
+    private String username;
 
     //密码
     @NotNull
@@ -47,11 +47,12 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String userName, String password, String nickName, Date registrationTime, String enabled, Set<Role> roles) {
-        this.userName = userName;
+    public User(String username, String password, String nickName, Date registrationTime, String enabled, Set<Role> roles) {
+        this.username = username;
         this.password = password;
         this.nickName = nickName;
-        this.registrationTime = registrationTime;
+        Date temp = registrationTime;
+        this.registrationTime = (Date) temp.clone();
         this.enabled = enabled;
         this.roles = roles;
     }
@@ -64,12 +65,12 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -89,11 +90,13 @@ public class User implements Serializable {
     }
 
     public Date getRegistrationTime() {
-        return registrationTime;
+        Date temp = registrationTime;
+        return temp;
     }
 
     public void setRegistrationTime(Date registrationTime) {
-        this.registrationTime = registrationTime;
+        Date temp = registrationTime;
+        this.registrationTime = (Date) temp.clone();
     }
 
     public String getEnabled() {

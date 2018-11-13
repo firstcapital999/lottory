@@ -19,7 +19,7 @@ public class SecurityUser extends User implements UserDetails {
         if(user != null )
         {
             this.setId(user.getId());
-            this.setUserName(user.getUserName());
+            this.setUsername(user.getUsername());
             this.setNickName(user.getNickName());
             this.setPassword(user.getPassword());
             this.setRegistrationTime(user.getRegistrationTime());
@@ -45,7 +45,7 @@ public class SecurityUser extends User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return super.getUserName();
+        return super.getUsername();
     }
 
     @Override

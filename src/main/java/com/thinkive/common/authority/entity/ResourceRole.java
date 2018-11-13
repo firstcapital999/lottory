@@ -34,7 +34,8 @@ public class ResourceRole {
     public ResourceRole(String roleId, String resourceId, Date updateTime) {
         this.roleId = roleId;
         this.resourceId = resourceId;
-        this.updateTime = updateTime;
+        Date temp = updateTime;
+        this.updateTime = (Date) temp.clone();
     }
 
     public Long getId() {
@@ -62,10 +63,12 @@ public class ResourceRole {
     }
 
     public Date getUpdateTime() {
-        return updateTime;
+        Date temp = updateTime;
+        return temp;
     }
 
     public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+        Date temp = updateTime;
+        this.updateTime = (Date) temp.clone();
     }
 }

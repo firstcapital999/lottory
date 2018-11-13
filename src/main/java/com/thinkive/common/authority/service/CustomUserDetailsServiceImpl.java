@@ -25,7 +25,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         //根据用户名查找用户信息
         System.out.println("登录用户名："+userName);
-        User user = userRepository.findByUserName(userName);
+        User user = userRepository.findByUsername(userName);
         if (user == null) {
             throw new UsernameNotFoundException("UserName " + userName + " not found");
         }

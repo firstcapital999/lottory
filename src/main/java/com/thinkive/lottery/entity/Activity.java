@@ -48,8 +48,10 @@ public class Activity {
         this.activityCode = activityCode;
         this.activityName = activityName;
         this.status = status;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        Date startTemp = startTime;
+        Date endTemp = endTime;
+        this.startTime = (Date) startTemp.clone();
+        this.endTime = (Date) endTemp.clone();
         this.prizes = prizes;
     }
 
@@ -86,19 +88,24 @@ public class Activity {
     }
 
     public Date getStartTime() {
-        return startTime;
+
+        Date temp = startTime;
+        return temp;
     }
 
     public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+        Date temp = startTime;
+        this.startTime = (Date) temp.clone();
     }
 
     public Date getEndTime() {
-        return endTime;
+        Date temp = endTime;
+        return temp;
     }
 
     public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+        Date temp = endTime;
+        this.endTime = (Date) temp.clone();
     }
 
     public Set<Prize> getPrizes() {

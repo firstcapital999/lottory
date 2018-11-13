@@ -66,7 +66,7 @@ public class UserServiceImpl implements IUserService {
     @Transactional
     public Result registerUser(User user) {
         //验证用户名是否存在
-        Boolean flag = this.checkUserExistByUserName(user.getUserName());
+        Boolean flag = this.checkUserExistByUserName(user.getUsername());
 
         if (flag) {
             //对密码进行加密
@@ -92,7 +92,7 @@ public class UserServiceImpl implements IUserService {
      */
     public Boolean checkUserExistByUserName(String userName) {
 
-        User user = this.userRepository.findByUserName(userName);
+        User user = this.userRepository.findByUsername(userName);
         if (user != null) {
             return false;
         } else {
@@ -146,7 +146,7 @@ public class UserServiceImpl implements IUserService {
      */
     private void saveUserToRedis(User user) {
 
-        this.redisTemplate.opsForValue().set(RedisConstant.USER_PREFIX_KEY + user.getUserName(), JSON.toJSONString(user));
+        this.redisTemplate.opsForValue().set(RedisConstant.USER_PREFIX_KEY + user.getUsername(), JSON.toJSONString(user));
 
 
     }

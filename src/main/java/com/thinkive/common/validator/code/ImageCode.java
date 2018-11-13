@@ -1,6 +1,7 @@
 package com.thinkive.common.validator.code;
 
 import java.awt.image.BufferedImage;
+import java.beans.Transient;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -11,7 +12,9 @@ import java.time.LocalDateTime;
  **/
 public class ImageCode implements Serializable{
 
-    private BufferedImage image;
+    private static final long serialVersionUID = 1L;
+
+    private transient BufferedImage image;
 
     private String code;
 

@@ -31,7 +31,7 @@ public class LotteryAuthenticationSuccessHandler extends
         SavedRequestAwareAuthenticationSuccessHandler {
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-    private RequestCache requestCache = new HttpSessionRequestCache();
+    //private RequestCache requestCache = new HttpSessionRequestCache();
 
     //redis模板类
     @Autowired
@@ -54,11 +54,11 @@ public class LotteryAuthenticationSuccessHandler extends
         User userDetails = (User) authentication.getPrincipal();
        /* Set<SysRole> roles = userDetails.getSysRoles();*/
         //输出登录提示信息
-        System.out.println("管理员 " + userDetails.getUserName() + " 登录");
+        System.out.println("管理员 " + userDetails.getUsername() + " 登录");
 
         System.out.println("IP :" + getIpAddress(request));
 
-        SavedRequest savedRequest = requestCache.getRequest(request, response);
+        //SavedRequest savedRequest = requestCache.getRequest(request, response);
 
  /*       String token = UUIDUtil.uuid();
         redisTemplate.opsForValue().set(RedisConstant.USER_SESSION_PREFIX_KEY+token,userDetails);*/

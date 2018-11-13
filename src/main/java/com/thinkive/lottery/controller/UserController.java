@@ -41,7 +41,7 @@ public class UserController {
     private IUserService userService;
 
     //session获取服务
-    private RequestCache requestCache = new HttpSessionRequestCache();
+//    private RequestCache requestCache = new HttpSessionRequestCache();
 
 
     /**
@@ -68,12 +68,11 @@ public class UserController {
     @PostMapping(value = "/regist")
     @ResponseBody
     public Result save(@Valid User user, BindingResult bindingResult) {
-        Result result = new Result<User>();
         if (bindingResult.hasErrors()) {
             return ResultUtil.error(ExceptionConstant.ERROR_CODE, ExceptionConstant.CHECK_ERROR);
         } else {
             //注册用户
-            result = this.userService.registerUser(user);
+            Result result = this.userService.registerUser(user);
 
             return result;
         }

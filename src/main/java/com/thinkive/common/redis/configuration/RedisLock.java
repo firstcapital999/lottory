@@ -93,7 +93,7 @@ public class RedisLock {
             }
             timeout -= DEFAULT_ACQUIRY_RETRY_MILLIS;
             //延时
-            Thread.sleep(DEFAULT_ACQUIRY_RETRY_MILLIS);
+            //Thread.sleep(DEFAULT_ACQUIRY_RETRY_MILLIS);
         }
         return false;
     }

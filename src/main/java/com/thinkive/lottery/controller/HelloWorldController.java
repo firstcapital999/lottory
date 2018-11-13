@@ -40,7 +40,7 @@ public class HelloWorldController {
     @Transactional
     public User userAdd(@RequestParam("userName") String userName, @RequestParam("password") String password) {
         User user = new User();
-        user.setUserName(userName);
+        user.setUsername(userName);
         user.setPassword(password);
         user.setEnabled("1");
         user.setRegistrationTime(new Date());

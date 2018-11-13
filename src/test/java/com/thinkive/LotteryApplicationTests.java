@@ -90,7 +90,7 @@ public class LotteryApplicationTests {
     public void testSaveUser() throws Exception{
         User user  = new User();
         user.setEnabled("1");
-        user.setUserName("13456544323");
+        user.setUsername("13456544323");
         user.setPassword("12345678");
         user.setRegistrationTime(new Date());
         Set<Role> roles = new HashSet<Role>();
@@ -100,7 +100,7 @@ public class LotteryApplicationTests {
         role.setUser(user);
         roles.add(role);
         user.setRoles(roles);
-        user = this.userRepository.save(user);
+        this.userRepository.save(user);
     }
 
 
