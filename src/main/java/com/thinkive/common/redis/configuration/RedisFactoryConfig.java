@@ -27,13 +27,13 @@ public class RedisFactoryConfig {
     @Bean
     public RedisConnectionFactory myLettuceConnectionFactory() {
         Map<String, Object> source = new HashMap<String, Object>();
-        String password = environment.getProperty("spring.redis.password");
+        //String password = environment.getProperty("spring.redis.password");
         source.put("spring.redis.cluster.nodes", environment.getProperty("spring.redis.cluster.nodes"));
         source.put("spring.redis.cluster.timeout", environment.getProperty("spring.redis.cluster.timeout"));
         source.put("spring.redis.cluster.max-redirects", environment.getProperty("spring.redis.cluster.max-redirects"));
         RedisClusterConfiguration redisClusterConfiguration;
         redisClusterConfiguration = new RedisClusterConfiguration(new MapPropertySource("RedisClusterConfiguration", source));
-        redisClusterConfiguration.setPassword(RedisPassword.of(password));
+        //redisClusterConfiguration.setPassword(RedisPassword.of(password));
         return new LettuceConnectionFactory(redisClusterConfiguration);
     }
 
