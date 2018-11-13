@@ -5,9 +5,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://120.77.200.240:3306/lottery
+    url: jdbc:mysql://10.100.17.155:3306/lottery
     username: root
-    password: root
+    password: 123456
   jpa:
     hibernate:
       ddl-auto: none
@@ -21,9 +21,9 @@ spring:
   redis:
      cluster:
        max-redirects: 6
-       nodes: 120.77.200.240:7001,120.77.200.240:7002,120.77.200.240:7003,120.77.200.240:7004,120.77.200.240:7005,120.77.200.240:7006
+       nodes: 10.100.17.155:7001,10.100.17.155:7002,10.100.17.155:7003,10.100.17.155:7004,10.100.17.155:7005,10.100.17.155:7006
      database: 0
-     password: tdwdcn1991
+     #password: tdwdcn1991
      timeout: 60000
   session:
     store-type: redis

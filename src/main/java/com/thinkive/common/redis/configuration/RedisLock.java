@@ -27,14 +27,7 @@ public class RedisLock {
      * 锁的key
      */
     private String lockKey = "lottery";
-    /**
-     * 锁超时时间，防止线程在入锁以后，防止阻塞后面的线程无法获取锁
-     */
-    private int expireMsecs = 60 * 1000;
-    /**
-     * 线程获取锁的等待时间
-     */
-    private int timeoutMsecs = 10 * 1000;
+
     /**
      * 是否锁定标志
      */
@@ -76,7 +69,8 @@ public class RedisLock {
      * 获取锁     * @return 获取锁成功返回ture，超时返回false     * @throws InterruptedException
      */
     public synchronized boolean lock() throws InterruptedException {
-        int timeout = timeoutMsecs;
+        int expireMsecs = 60 * 1000;
+        int timeout = 10 * 1000;
         while (timeout >= 0) {
             long expires = System.currentTimeMillis() + expireMsecs + 1;
             String expiresStr = String.valueOf(expires);

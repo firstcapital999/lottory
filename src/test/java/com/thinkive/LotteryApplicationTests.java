@@ -69,7 +69,7 @@ public class LotteryApplicationTests {
 
     @Test
     public void whenUploadSuccess() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/file")
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/file")
                 .file(new MockMultipartFile("file","test.txt","multipart/form-data","hello upload".getBytes("UTF-8"))))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
