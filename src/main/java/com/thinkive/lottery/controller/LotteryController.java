@@ -4,6 +4,9 @@ import com.thinkive.common.entity.Result;
 import com.thinkive.lottery.service.ILotteryService;
 import com.thinkive.lottery.util.LotteryCallable;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,10 @@ public class LotteryController {
      * @Describe 抽奖
      */
     /*@GetMapping(value = "/lottery")*/
+    @ApiOperation(
+            value = "抽奖活动-抽奖 ",
+            notes = "抽奖活动-抽奖"
+    )
     @RequestMapping(value = "/lottery", method = RequestMethod.POST)
     public Callable<Result> lottery() {
 
@@ -56,6 +63,24 @@ public class LotteryController {
      * @param end 结束位置
      * @return
      */
+    @ApiOperation(
+            value = "抽奖活动-获取redis中的奖品信息",
+            notes = "抽奖活动-获取redis中的奖品信息"
+    )
+    @ApiImplicitParams({@ApiImplicitParam(
+            name = "start",
+            value = "start",
+            required = true,
+            paramType = "query",
+            dataType = "Long"
+    ),
+            @ApiImplicitParam(
+                    name = "end",
+                    value = "end",
+                    required = true,
+                    paramType = "query",
+                    dataType = "Long"
+            )})
     @PostMapping(value = "/getLatestAwardList")
     public Result getLatestAwardList(@RequestParam("start") long start, @RequestParam("end") long end) {
 

@@ -27,11 +27,16 @@ spring:
      timeout: 60000
   session:
     store-type: redis
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://10.100.17.155:8761/eureka/, http://10.100.17.155:8762/eureka/
 activity:
   id: 1
   beginDate: 2017-09-01 00:00:00
   endDate: 2117-11-31 23:59:59
 swagger:
+  enabled: true
   base-package: com.thinkive
   title: 抽奖
   description: 抽奖API
