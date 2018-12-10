@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
  * @Author dengchangneng
  * @CreateTime 2017年11月13日23:13:10
  */
+@SuppressWarnings("ALL")
 @Service
 public class LotteryDetailServiceImpl implements ILotteryDetailService {
 
@@ -24,6 +25,7 @@ public class LotteryDetailServiceImpl implements ILotteryDetailService {
      * @return 抽奖明细
      * @Describe 保存抽奖明细
      */
+    @SuppressWarnings("AlibabaTransactionMustHaveRollback")
     @Override
     @Transactional
     public LotteryDetail save(LotteryDetail lotteryDetail) {
