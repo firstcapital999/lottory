@@ -32,7 +32,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://10.100.17.155:8761/eureka/, http://10.100.17.155:8762/eureka/
+      defaultZone: http://10.100.17.155:8761/eureka/,http://10.100.17.155:8762/eureka/
 activity:
   id: 1
   beginDate: 2017-09-01 00:00:00
