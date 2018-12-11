@@ -1,0 +1,17 @@
+server:
+  port: 80
+#  session:
+#    timeout: 60
+spring:
+  application:
+    name: lottery
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: CONFIG
+      profile: dev
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://10.100.17.155:8761/eureka/,http://10.100.17.155:8762/eureka/
